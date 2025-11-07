@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>محادثة الذكاء الاصطناعي - متصلة بـ n8n</title>
     <style>
-        /* نفس الأنماط السابقة */
         :root {
             --primary-color: #4a6fa5;
             --secondary-color: #166088;
@@ -26,20 +25,21 @@
         }
         
         body {
-            background-color: #f0f2f5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: var(--dark-color);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
         
         .header {
-            background-color: var(--primary-color);
-            color: white;
+            background-color: rgba(255, 255, 255, 0.95);
+            color: var(--primary-color);
             padding: 1rem;
             text-align: center;
             box-shadow: var(--shadow);
             position: relative;
+            backdrop-filter: blur(10px);
         }
         
         .status-indicator {
@@ -58,10 +58,18 @@
             height: 10px;
             border-radius: 50%;
             background-color: var(--success-color);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
         
         .status-dot.offline {
             background-color: var(--error-color);
+            animation: none;
         }
         
         .chat-container {
@@ -69,14 +77,13 @@
             display: flex;
             flex-direction: column;
             max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
-            background-color: white;
+            margin: 1rem auto;
+            width: 95%;
+            background-color: rgba(255, 255, 255, 0.95);
             box-shadow: var(--shadow);
-            border-radius: 10px;
+            border-radius: 15px;
             overflow: hidden;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
         }
         
         .chat-messages {
@@ -86,6 +93,7 @@
             display: flex;
             flex-direction: column;
             gap: 1rem;
+            background: transparent;
         }
         
         .message {
@@ -104,7 +112,8 @@
         
         .user-message {
             align-self: flex-end;
-            background-color: var(--user-msg-bg);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
             border-bottom-right-radius: 4px;
         }
         
@@ -112,6 +121,7 @@
             align-self: flex-start;
             background-color: var(--bot-msg-bg);
             border-bottom-left-radius: 4px;
+            border: 1px solid #e0e0e0;
         }
         
         .error-message {
@@ -121,6 +131,7 @@
             max-width: 90%;
             text-align: center;
             font-size: 0.9rem;
+            border: 1px solid #ffcdd2;
         }
         
         .typing-indicator {
@@ -130,6 +141,7 @@
             border-radius: 18px;
             border-bottom-left-radius: 4px;
             display: none;
+            border: 1px solid #e0e0e0;
         }
         
         .typing-dots {
@@ -169,15 +181,17 @@
             font-size: 1rem;
             resize: none;
             max-height: 120px;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
+            background: white;
         }
         
         .chat-input:focus {
             border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.1);
         }
         
         .send-button {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             border: none;
             border-radius: 50%;
@@ -188,15 +202,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(74, 111, 165, 0.3);
         }
         
         .send-button:hover {
-            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 111, 165, 0.4);
         }
         
         .send-button:disabled {
-            background-color: #cccccc;
+            background: #cccccc;
+            transform: none;
+            box-shadow: none;
             cursor: not-allowed;
         }
         
@@ -208,9 +226,10 @@
         }
         
         .config-panel {
-            background-color: #f8f9fa;
+            background-color: rgba(248, 249, 250, 0.95);
             padding: 1rem;
             border-bottom: 1px solid #e0e0e0;
+            backdrop-filter: blur(10px);
         }
         
         .config-form {
@@ -223,43 +242,85 @@
         .url-input {
             flex: 1;
             min-width: 200px;
-            padding: 0.5rem;
+            padding: 0.75rem;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 8px;
             font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .url-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.1);
         }
         
         .test-button {
-            background-color: #28a745;
+            background: linear-gradient(135deg, #28a745, #20c997);
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 0.9rem;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
         }
         
         .test-button:hover {
-            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
         }
         
-        .proxy-option {
+        .test-button:disabled {
+            background: #cccccc;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .deploy-info {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .deploy-buttons {
             display: flex;
-            align-items: center;
             gap: 0.5rem;
+            justify-content: center;
             margin-top: 0.5rem;
+            flex-wrap: wrap;
         }
         
-        .proxy-checkbox {
-            width: 16px;
-            height: 16px;
+        .deploy-button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        
+        .deploy-button.netlify {
+            background: #00c7b7;
+        }
+        
+        .deploy-button.vercel {
+            background: #000000;
+        }
+        
+        .deploy-button:hover {
+            transform: translateY(-2px);
         }
         
         @media (max-width: 768px) {
             .chat-container {
-                margin: 0;
-                border-radius: 0;
-                height: 100%;
+                margin: 0.5rem;
+                width: calc(100% - 1rem);
+                border-radius: 10px;
             }
             
             .message {
@@ -275,13 +336,18 @@
             .config-form {
                 flex-direction: column;
             }
+            
+            body {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>محادثة الذكاء الاصطناعي</h1>
-        <p>متصل بـ n8n</p>
+        <h1>🤖 محادثة الذكاء الاصطناعي</h1>
+        <p>متصل بـ n8n - مستضاف على Netlify</p>
         <div class="status-indicator">
             <div class="status-dot offline" id="statusDot"></div>
             <span id="statusText">غير متصل</span>
@@ -289,24 +355,33 @@
     </div>
     
     <div class="config-panel">
-        <div class="config-form">
-            <input type="url" class="url-input" id="http://107.150.1.238:5678/webhook-test/4566475e-0d85-428b-84cc-a817d8b55a45" placeholder="http://107.150.1.238:5678/webhook-test/4566475e-0d85-428b-84cc-a817d8b55a45" value="">
-            <button class="test-button" id="testButton">اختبار الاتصال</button>
+        <div class="deploy-info">
+            <strong>💡 تم تحسين الكود للنشر على Netlify</strong>
+            <p>لا توجد مشاكل CORS - استضف مجاناً على:</p>
+            <div class="deploy-buttons">
+                <a href="https://netlify.com" target="_blank" class="deploy-button netlify">🚀 Netlify</a>
+                <a href="https://vercel.com" target="_blank" class="deploy-button vercel">⭐ Vercel</a>
+            </div>
         </div>
-        <div class="proxy-option">
-            <input type="checkbox" id="useProxy" class="proxy-checkbox">
-            <label for="useProxy">استخدام CORS Proxy (إذا كان n8n لا يدعم CORS)</label>
+        
+        <div class="config-form">
+            <input type="url" class="url-input" id="webhookUrl" placeholder="أhttp://107.150.1.238:5678/webhook-test/4566475e-0d85-428b-84cc-a817d8b55a45" value="">
+            <button class="test-button" id="testButton">اختبار الاتصال</button>
         </div>
     </div>
     
     <div class="chat-container">
         <div class="chat-messages" id="chatMessages">
             <div class="message bot-message">
-                مرحباً! لأبدأ المحادثة، يرجى إدخال رابط الـ Webhook الخاص بـ n8n في الأعلى.
+                🎉 مرحباً! التطبيق الآن جاهز للنشر على Netlify بدون مشاكل CORS!
                 <div class="timestamp" id="initialTimestamp"></div>
             </div>
-            <div class="message error-message">
-                ملاحظة: بسبب استضافة الصفحة على GitHub Pages، قد تحتاج إلى استخدام CORS Proxy أو ضبط إعدادات CORS في n8n.
+            <div class="message bot-message">
+                💡 لإكمال الإعداد:
+                <br>1. انسخ كود HTML هذا
+                <br>2. اذهب إلى netlify.com
+                <br>3. اسحب الملف إلى الموقع أو انشر من GitHub
+                <br>4. أدخل رابط n8n في الأعلى
             </div>
         </div>
         
@@ -339,9 +414,8 @@
             const statusText = document.getElementById('statusText');
             const webhookUrlInput = document.getElementById('webhookUrl');
             const testButton = document.getElementById('testButton');
-            const useProxyCheckbox = document.getElementById('useProxy');
             
-            let n8nWebhookURL = '';
+            let n8nWebhookURL = 'http://107.150.1.238:5678/webhook-test/4566475e-0d85-428b-84cc-a817d8b55a45';
             let isConnected = false;
             
             // تعيين الطابع الزمني للرسالة الافتتاحية
@@ -381,20 +455,20 @@
                     return;
                 }
                 
-                n8nWebhookURL = url;
+                n8nWebhookURL = http://107.150.1.238:5678/webhook-test/4566475e-0d85-428b-84cc-a817d8b55a45;
                 testButton.disabled = true;
                 testButton.textContent = 'جاري الاختبار...';
                 
                 // اختبار الاتصال بإرسال رسالة تجريبية
-                sendTestToN8N('رسالة اختبار للاتصال')
+                sendToN8N('رسالة اختبار للاتصال', true)
                     .then(() => {
                         setConnectionStatus(true);
-                        addMessage('تم الاتصال بنجاح بـ n8n! يمكنك الآن بدء المحادثة.', 'bot');
+                        addMessage('✅ تم الاتصال بنجاح بـ n8n! يمكنك الآن بدء المحادثة.', 'bot');
                     })
                     .catch(error => {
                         console.error('Connection test failed:', error);
                         setConnectionStatus(false);
-                        addMessage('فشل الاتصال بـ n8n: ' + error.message, 'bot', true);
+                        addMessage('❌ فشل الاتصال بـ n8n: ' + error.message, 'bot', true);
                     })
                     .finally(() => {
                         testButton.disabled = false;
@@ -422,7 +496,7 @@
                 scrollToBottom();
                 
                 // إرسال الرسالة إلى n8n
-                sendToN8N(message);
+                sendToN8N(message, false);
             }
             
             function addMessage(text, sender, isError = false) {
@@ -468,98 +542,72 @@
                 }
             }
             
-            function getProxyUrl(url) {
-                if (!useProxyCheckbox.checked) return url;
-                
-                // استخدام CORS Proxy - هذه خدمة مجانية للاختبار فقط
-                return 'https://cors-anywhere.herokuapp.com/' + url;
-            }
-            
-            function sendTestToN8N(testMessage) {
-                const requestData = {
-                    test: true,
-                    message: testMessage,
-                    timestamp: new Date().toISOString()
-                };
-                
-                const url = getProxyUrl(n8nWebhookURL);
-                
-                return fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestData)
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                });
-            }
-            
-            function sendToN8N(message) {
+            function sendToN8N(message, isTest = false) {
                 const requestData = {
                     message: message,
                     timestamp: new Date().toISOString(),
-                    sessionId: generateSessionId()
+                    sessionId: generateSessionId(),
+                    isTest: isTest
                 };
                 
-                const url = getProxyUrl(n8nWebhookURL);
-                
-                fetch(url, {
+                return fetch(n8nWebhookURL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
                     },
                     body: JSON.stringify(requestData)
                 })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                        throw new Error(`خطأ في الشبكة: ${response.status}`);
                     }
                     return response.json();
                 })
                 .then(data => {
-                    // إخفاء مؤشر الكتابة
-                    typingIndicator.style.display = 'none';
-                    
-                    // إضافة رد الذكاء الاصطناعي إلى المحادثة
-                    const aiResponse = data.response || data.answer || data.message || 'تم استلام رسالتك بنجاح.';
-                    addMessage(aiResponse, 'bot');
-                    
-                    // إعادة تمكين زر الإرسال
-                    sendButton.disabled = false;
-                    chatInput.disabled = false;
+                    if (!isTest) {
+                        // إخفاء مؤشر الكتابة
+                        typingIndicator.style.display = 'none';
+                        
+                        // إضافة رد الذكاء الاصطناعي إلى المحادثة
+                        const aiResponse = data.response || data.answer || data.message || 'تم استلام رسالتك بنجاح.';
+                        addMessage(aiResponse, 'bot');
+                        
+                        // إعادة تمكين زر الإرسال
+                        sendButton.disabled = false;
+                        chatInput.disabled = false;
+                    }
+                    return data;
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    
-                    // إخفاء مؤشر الكتابة
-                    typingIndicator.style.display = 'none';
-                    
-                    // إضافة رسالة خطأ
-                    let errorMessage = 'عذراً، حدث خطأ في الاتصال. ';
-                    
-                    if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
-                        errorMessage += 'يبدو أن هناك مشكلة في CORS. جرب تفعيل خيار CORS Proxy.';
-                    } else {
-                        errorMessage += error.message;
+                    if (!isTest) {
+                        // إخفاء مؤشر الكتابة
+                        typingIndicator.style.display = 'none';
+                        
+                        // إضافة رسالة خطأ
+                        addMessage('❌ عذراً، حدث خطأ في الاتصال: ' + error.message, 'bot', true);
+                        
+                        // إعادة تمكين زر الإرسال
+                        sendButton.disabled = false;
+                        chatInput.disabled = false;
                     }
-                    
-                    addMessage(errorMessage, 'bot', true);
-                    
-                    // إعادة تمكين زر الإرسال
-                    sendButton.disabled = false;
-                    chatInput.disabled = false;
+                    throw error;
                 });
             }
             
             function generateSessionId() {
                 return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             }
+            
+            // تحميل أي إعدادات محفوظة
+            const savedUrl = localStorage.getItem('n8nWebhookURL');
+            if (savedUrl) {
+                webhookUrlInput.value = savedUrl;
+            }
+            
+            // حفظ الإعدادات عند التغيير
+            webhookUrlInput.addEventListener('change', function() {
+                localStorage.setItem('n8nWebhookURL', this.value);
+            });
         });
     </script>
 </body>
