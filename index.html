@@ -15,6 +15,7 @@
             --shadow: 0 2px 10px rgba(0,0,0,0.1);
             --error-color: #f44336;
             --success-color: #4caf50;
+            --warning-color: #ff9800;
         }
         
         * {
@@ -72,11 +73,16 @@
             animation: none;
         }
         
+        .status-dot.connecting {
+            background-color: var(--warning-color);
+            animation: pulse 1s infinite;
+        }
+        
         .chat-container {
             flex: 1;
             display: flex;
             flex-direction: column;
-            max-width: 800px;
+            max-width: 900px;
             margin: 1rem auto;
             width: 95%;
             background-color: rgba(255, 255, 255, 0.95);
@@ -94,15 +100,17 @@
             flex-direction: column;
             gap: 1rem;
             background: transparent;
+            min-height: 400px;
         }
         
         .message {
-            max-width: 80%;
+            max-width: 85%;
             padding: 0.75rem 1rem;
             border-radius: 18px;
             position: relative;
             word-wrap: break-word;
             animation: fadeIn 0.3s ease-in;
+            line-height: 1.5;
         }
         
         @keyframes fadeIn {
@@ -128,10 +136,22 @@
             align-self: center;
             background-color: #ffebee;
             color: var(--error-color);
-            max-width: 90%;
+            max-width: 95%;
             text-align: center;
             font-size: 0.9rem;
             border: 1px solid #ffcdd2;
+            padding: 1rem;
+        }
+        
+        .debug-message {
+            align-self: center;
+            background-color: #fff3e0;
+            color: var(--warning-color);
+            max-width: 95%;
+            text-align: center;
+            font-size: 0.85rem;
+            border: 1px solid #ffe0b2;
+            padding: 0.75rem;
         }
         
         .typing-indicator {
@@ -227,7 +247,7 @@
         
         .config-panel {
             background-color: rgba(248, 249, 250, 0.95);
-            padding: 1rem;
+            padding: 1.5rem;
             border-bottom: 1px solid #e0e0e0;
             backdrop-filter: blur(10px);
         }
@@ -237,16 +257,18 @@
             gap: 0.5rem;
             flex-wrap: wrap;
             align-items: center;
+            margin-bottom: 1rem;
         }
         
         .url-input {
             flex: 1;
-            min-width: 200px;
+            min-width: 300px;
             padding: 0.75rem;
-            border: 1px solid #ddd;
+            border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 0.9rem;
             transition: all 0.3s;
+            font-family: monospace;
         }
         
         .url-input:focus {
@@ -277,43 +299,44 @@
             box-shadow: none;
         }
         
-        .deploy-info {
+        .advanced-options {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .option-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .debug-info {
             background: #e3f2fd;
             border: 1px solid #bbdefb;
             border-radius: 8px;
             padding: 1rem;
-            margin: 1rem 0;
-            text-align: center;
-        }
-        
-        .deploy-buttons {
-            display: flex;
-            gap: 0.5rem;
-            justify-content: center;
-            margin-top: 0.5rem;
-            flex-wrap: wrap;
-        }
-        
-        .deploy-button {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 6px;
-            text-decoration: none;
-            color: white;
+            margin-top: 1rem;
             font-size: 0.8rem;
-            transition: all 0.3s;
+            display: none;
         }
         
-        .deploy-button.netlify {
-            background: #00c7b7;
-        }
-        
-        .deploy-button.vercel {
-            background: #000000;
-        }
-        
-        .deploy-button:hover {
-            transform: translateY(-2px);
+        .debug-toggle {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-decoration: underline;
         }
         
         @media (max-width: 768px) {
@@ -337,6 +360,10 @@
                 flex-direction: column;
             }
             
+            .url-input {
+                min-width: 100%;
+            }
+            
             body {
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 min-height: 100vh;
@@ -355,33 +382,45 @@
     </div>
     
     <div class="config-panel">
-        <div class="deploy-info">
-            <strong>💡 تم تحسين الكود للنشر على Netlify</strong>
-            <p>لا توجد مشاكل CORS - استضف مجاناً على:</p>
-            <div class="deploy-buttons">
-                <a href="https://netlify.com" target="_blank" class="deploy-button netlify">🚀 Netlify</a>
-                <a href="https://vercel.com" target="_blank" class="deploy-button vercel">⭐ Vercel</a>
-            </div>
+        <div class="config-form">
+            <input type="url" class="url-input" id="webhookUrl" 
+                   placeholder="https://your-n8n-domain.com/webhook/your-unique-id" 
+                   value="">
+            <button class="test-button" id="testButton">اختبار الاتصال</button>
         </div>
         
-        <div class="config-form">
-            <input type="url" class="url-input" id="webhookUrl" placeholder="أhttp://107.150.1.238:5678/webhook-test/4566475e-0d85-428b-84cc-a817d8b55a45" value="">
-            <button class="test-button" id="testButton">اختبار الاتصال</button>
+        <div class="advanced-options">
+            <h4>🛠️ خيارات متقدمة لحل المشاكل</h4>
+            <div class="option-group">
+                <div class="option-item">
+                    <input type="checkbox" id="useCorsProxy" class="proxy-checkbox">
+                    <label for="useCorsProxy">استخدام CORS Proxy (إذا ظهرت أخطاء CORS)</label>
+                </div>
+                <div class="option-item">
+                    <input type="checkbox" id="debugMode" class="debug-checkbox">
+                    <label for="debugMode">وضع التصحيح (عرض معلومات مفصلة)</label>
+                </div>
+            </div>
+            
+            <button class="debug-toggle" id="debugToggle">إظهار معلومات التصحيح</button>
+            <div class="debug-info" id="debugInfo">
+                <div><strong>معلومات التصحيح:</strong></div>
+                <div id="debugContent">سيظهر هنا معلومات مفصلة عن الاتصال</div>
+            </div>
         </div>
     </div>
     
     <div class="chat-container">
         <div class="chat-messages" id="chatMessages">
             <div class="message bot-message">
-                🎉 مرحباً! التطبيق الآن جاهز للنشر على Netlify بدون مشاكل CORS!
+                🎉 تم نقل التطبيق إلى Netlify بنجاح!
                 <div class="timestamp" id="initialTimestamp"></div>
             </div>
-            <div class="message bot-message">
-                💡 لإكمال الإعداد:
-                <br>1. انسخ كود HTML هذا
-                <br>2. اذهب إلى netlify.com
-                <br>3. اسحب الملف إلى الموقع أو انشر من GitHub
-                <br>4. أدخل رابط n8n في الأعلى
+            <div class="message debug-message">
+                🔍 <strong>لتشخيص المشكلة:</strong><br>
+                1. تأكد من تفعيل الـ Workflow في n8n<br>
+                2. تحقق من أن رابط Webhook صحيح<br>
+                3. جرب خيار CORS Proxy إذا استمرت المشكلة
             </div>
         </div>
         
@@ -394,7 +433,7 @@
         </div>
         
         <div class="chat-input-container">
-            <textarea class="chat-input" id="chatInput" placeholder="اكتب رسالتك هنا..." rows="1" disabled></textarea>
+            <textarea class="chat-input" id="chatInput" placeholder="يجب الاتصال بـ n8n أولاً..." rows="1" disabled></textarea>
             <button class="send-button" id="sendButton" disabled>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -414,61 +453,102 @@
             const statusText = document.getElementById('statusText');
             const webhookUrlInput = document.getElementById('webhookUrl');
             const testButton = document.getElementById('testButton');
+            const useCorsProxyCheckbox = document.getElementById('useCorsProxy');
+            const debugModeCheckbox = document.getElementById('debugMode');
+            const debugToggle = document.getElementById('debugToggle');
+            const debugInfo = document.getElementById('debugInfo');
+            const debugContent = document.getElementById('debugContent');
             
-            let n8nWebhookURL = 'http://107.150.1.238:5678/webhook-test/4566475e-0d85-428b-84cc-a817d8b55a45';
+            let n8nWebhookURL = '';
             let isConnected = false;
+            let debugLog = [];
             
             // تعيين الطابع الزمني للرسالة الافتتاحية
             document.getElementById('initialTimestamp').textContent = getCurrentTime();
             
-            // ضبط ارتفاع حقل الإدخال تلقائياً
-            chatInput.addEventListener('input', function() {
-                this.style.height = 'auto';
-                this.style.height = (this.scrollHeight) + 'px';
-            });
+            // تحميل الإعدادات المحفوظة
+            loadSavedSettings();
             
-            // إرسال الرسالة عند الضغط على زر الإرسال
-            sendButton.addEventListener('click', sendMessage);
+            // إعداد event listeners
+            setupEventListeners();
             
-            // إرسال الرسالة عند الضغط على Enter
-            chatInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    sendMessage();
-                }
-            });
-            
-            // اختبار الاتصال بـ n8n
-            testButton.addEventListener('click', testConnection);
-            
-            // السماح بإدخال URL أيضاً بالضغط على Enter
-            webhookUrlInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    testConnection();
-                }
-            });
+            function setupEventListeners() {
+                // ضبط ارتفاع حقل الإدخال تلقائياً
+                chatInput.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = (this.scrollHeight) + 'px';
+                });
+                
+                // إرسال الرسالة عند الضغط على زر الإرسال
+                sendButton.addEventListener('click', sendMessage);
+                
+                // إرسال الرسالة عند الضغط على Enter
+                chatInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendMessage();
+                    }
+                });
+                
+                // اختبار الاتصال بـ n8n
+                testButton.addEventListener('click', testConnection);
+                
+                // السماح بإدخال URL أيضاً بالضغط على Enter
+                webhookUrlInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        testConnection();
+                    }
+                });
+                
+                // حفظ الإعدادات عند التغيير
+                webhookUrlInput.addEventListener('change', saveSettings);
+                useCorsProxyCheckbox.addEventListener('change', saveSettings);
+                debugModeCheckbox.addEventListener('change', saveSettings);
+                
+                // تبديل عرض معلومات التصحيح
+                debugToggle.addEventListener('click', function() {
+                    debugInfo.style.display = debugInfo.style.display === 'none' ? 'block' : 'none';
+                    this.textContent = debugInfo.style.display === 'none' ? 'إظهار معلومات التصحيح' : 'إخفاء معلومات التصحيح';
+                });
+            }
             
             function testConnection() {
                 const url = webhookUrlInput.value.trim();
                 if (!url) {
-                    alert('يرجى إدخال رابط الـ Webhook أولاً');
+                    alert('⚠️ يرجى إدخال رابط الـ Webhook أولاً');
                     return;
                 }
                 
-                n8nWebhookURL = http://107.150.1.238:5678/webhook-test/4566475e-0d85-428b-84cc-a817d8b55a45;
+                n8nWebhookURL = url;
                 testButton.disabled = true;
                 testButton.textContent = 'جاري الاختبار...';
+                setConnectionStatus('connecting');
+                
+                addDebugLog('بدء اختبار الاتصال', { url: n8nWebhookURL, useProxy: useCorsProxyCheckbox.checked });
                 
                 // اختبار الاتصال بإرسال رسالة تجريبية
                 sendToN8N('رسالة اختبار للاتصال', true)
-                    .then(() => {
-                        setConnectionStatus(true);
+                    .then((data) => {
+                        setConnectionStatus('connected');
                         addMessage('✅ تم الاتصال بنجاح بـ n8n! يمكنك الآن بدء المحادثة.', 'bot');
+                        addDebugLog('اختبار الاتصال نجح', data);
                     })
                     .catch(error => {
                         console.error('Connection test failed:', error);
-                        setConnectionStatus(false);
-                        addMessage('❌ فشل الاتصال بـ n8n: ' + error.message, 'bot', true);
+                        setConnectionStatus('disconnected');
+                        
+                        let errorMessage = '❌ فشل الاتصال بـ n8n: ';
+                        
+                        if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
+                            errorMessage += 'مشكلة في CORS. جرب تفعيل خيار CORS Proxy.';
+                        } else if (error.message.includes('Failed to fetch')) {
+                            errorMessage += 'لا يمكن الوصول إلى الخادم. تحقق من الرابط وتأكد من تفعيل الـ Workflow.';
+                        } else {
+                            errorMessage += error.message;
+                        }
+                        
+                        addMessage(errorMessage, 'bot', true);
+                        addDebugLog('اختبار الاتصال فشل', { error: error.message, stack: error.stack });
                     })
                     .finally(() => {
                         testButton.disabled = false;
@@ -525,21 +605,44 @@
                        now.getMinutes().toString().padStart(2, '0');
             }
             
-            function setConnectionStatus(connected) {
-                isConnected = connected;
-                if (connected) {
-                    statusDot.classList.remove('offline');
-                    statusText.textContent = 'متصل';
-                    chatInput.disabled = false;
-                    sendButton.disabled = false;
-                    chatInput.placeholder = 'اكتب رسالتك هنا...';
-                } else {
-                    statusDot.classList.add('offline');
-                    statusText.textContent = 'غير متصل';
-                    chatInput.disabled = true;
-                    sendButton.disabled = true;
-                    chatInput.placeholder = 'يجب الاتصال أولاً بـ n8n';
+            function setConnectionStatus(status) {
+                switch(status) {
+                    case 'connected':
+                        isConnected = true;
+                        statusDot.classList.remove('offline', 'connecting');
+                        statusText.textContent = 'متصل';
+                        chatInput.disabled = false;
+                        sendButton.disabled = false;
+                        chatInput.placeholder = 'اكتب رسالتك هنا...';
+                        break;
+                    case 'disconnected':
+                        isConnected = false;
+                        statusDot.classList.remove('connecting');
+                        statusDot.classList.add('offline');
+                        statusText.textContent = 'غير متصل';
+                        chatInput.disabled = true;
+                        sendButton.disabled = true;
+                        chatInput.placeholder = 'يجب الاتصال أولاً بـ n8n';
+                        break;
+                    case 'connecting':
+                        statusDot.classList.remove('offline');
+                        statusDot.classList.add('connecting');
+                        statusText.textContent = 'جاري الاتصال...';
+                        break;
                 }
+            }
+            
+            function getProxyUrl(url) {
+                if (!useCorsProxyCheckbox.checked) return url;
+                
+                // استخدام CORS Proxy بديل
+                const proxies = [
+                    'https://cors-anywhere.herokuapp.com/',
+                    'https://api.codetabs.com/v1/proxy?quest=',
+                    'https://cors-proxy.htmldriven.com/?url='
+                ];
+                
+                return proxies[0] + url;
             }
             
             function sendToN8N(message, isTest = false) {
@@ -547,10 +650,19 @@
                     message: message,
                     timestamp: new Date().toISOString(),
                     sessionId: generateSessionId(),
-                    isTest: isTest
+                    isTest: isTest,
+                    source: 'netlify-chat'
                 };
                 
-                return fetch(n8nWebhookURL, {
+                const url = getProxyUrl(n8nWebhookURL);
+                
+                addDebugLog('إرسال طلب إلى n8n', { 
+                    url: url, 
+                    data: requestData,
+                    isTest: isTest 
+                });
+                
+                return fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -558,8 +670,14 @@
                     body: JSON.stringify(requestData)
                 })
                 .then(response => {
+                    addDebugLog('استجابة HTTP', {
+                        status: response.status,
+                        statusText: response.statusText,
+                        headers: Object.fromEntries(response.headers.entries())
+                    });
+                    
                     if (!response.ok) {
-                        throw new Error(`خطأ في الشبكة: ${response.status}`);
+                        throw new Error(`خطأ HTTP: ${response.status} - ${response.statusText}`);
                     }
                     return response.json();
                 })
@@ -576,6 +694,8 @@
                         sendButton.disabled = false;
                         chatInput.disabled = false;
                     }
+                    
+                    addDebugLog('استجابة n8n', data);
                     return data;
                 })
                 .catch(error => {
@@ -584,12 +704,20 @@
                         typingIndicator.style.display = 'none';
                         
                         // إضافة رسالة خطأ
-                        addMessage('❌ عذراً، حدث خطأ في الاتصال: ' + error.message, 'bot', true);
+                        let errorMessage = '❌ عذراً، حدث خطأ في الاتصال: ' + error.message;
+                        
+                        if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
+                            errorMessage += ' جرب تفعيل خيار CORS Proxy.';
+                        }
+                        
+                        addMessage(errorMessage, 'bot', true);
                         
                         // إعادة تمكين زر الإرسال
                         sendButton.disabled = false;
                         chatInput.disabled = false;
                     }
+                    
+                    addDebugLog('خطأ في الاتصال', { error: error.message });
                     throw error;
                 });
             }
@@ -598,16 +726,57 @@
                 return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             }
             
-            // تحميل أي إعدادات محفوظة
-            const savedUrl = localStorage.getItem('n8nWebhookURL');
-            if (savedUrl) {
-                webhookUrlInput.value = savedUrl;
+            function addDebugLog(title, data) {
+                if (!debugModeCheckbox.checked) return;
+                
+                const logEntry = {
+                    timestamp: new Date().toISOString(),
+                    title: title,
+                    data: data
+                };
+                
+                debugLog.push(logEntry);
+                
+                // تحديث محتوى التصحيح
+                let debugHtml = '';
+                debugLog.forEach(entry => {
+                    debugHtml += `<div style="margin-bottom: 10px; padding: 5px; border-bottom: 1px solid #ccc;">`;
+                    debugHtml += `<strong>${new Date(entry.timestamp).toLocaleTimeString()}: ${entry.title}</strong><br>`;
+                    debugHtml += `<pre style="font-size: 0.7rem; white-space: pre-wrap;">${JSON.stringify(entry.data, null, 2)}</pre>`;
+                    debugHtml += `</div>`;
+                });
+                
+                debugContent.innerHTML = debugHtml;
+                debugInfo.scrollTop = debugInfo.scrollHeight;
             }
             
-            // حفظ الإعدادات عند التغيير
-            webhookUrlInput.addEventListener('change', function() {
-                localStorage.setItem('n8nWebhookURL', this.value);
-            });
+            function saveSettings() {
+                const settings = {
+                    webhookUrl: webhookUrlInput.value,
+                    useCorsProxy: useCorsProxyCheckbox.checked,
+                    debugMode: debugModeCheckbox.checked
+                };
+                
+                localStorage.setItem('n8nChatSettings', JSON.stringify(settings));
+            }
+            
+            function loadSavedSettings() {
+                const saved = localStorage.getItem('n8nChatSettings');
+                if (saved) {
+                    try {
+                        const settings = JSON.parse(saved);
+                        webhookUrlInput.value = settings.webhookUrl || '';
+                        useCorsProxyCheckbox.checked = settings.useCorsProxy || false;
+                        debugModeCheckbox.checked = settings.debugMode || false;
+                        
+                        if (settings.webhookUrl) {
+                            n8nWebhookURL = settings.webhookUrl;
+                        }
+                    } catch (e) {
+                        console.error('Error loading settings:', e);
+                    }
+                }
+            }
         });
     </script>
 </body>
