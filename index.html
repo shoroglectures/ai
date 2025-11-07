@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>محادثة الذكاء الاصطناعي - متصلة بـ n8n</title>
     <style>
+        /* نفس الأنماط السابقة */
         :root {
             --primary-color: #4a6fa5;
             --secondary-color: #166088;
@@ -216,6 +217,7 @@
             display: flex;
             gap: 0.5rem;
             flex-wrap: wrap;
+            align-items: center;
         }
         
         .url-input {
@@ -239,6 +241,18 @@
         
         .test-button:hover {
             background-color: #218838;
+        }
+        
+        .proxy-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .proxy-checkbox {
+            width: 16px;
+            height: 16px;
         }
         
         @media (max-width: 768px) {
@@ -279,19 +293,20 @@
             <input type="url" class="url-input" id="webhookUrl" placeholder="أدخل رابط الـ Webhook الخاص بـ n8n" value="">
             <button class="test-button" id="testButton">اختبار الاتصال</button>
         </div>
+        <div class="proxy-option">
+            <input type="checkbox" id="useProxy" class="proxy-checkbox">
+            <label for="useProxy">استخدام CORS Proxy (إذا كان n8n لا يدعم CORS)</label>
+        </div>
     </div>
     
     <div class="chat-container">
         <div class="chat-messages" id="chatMessages">
             <div class="message bot-message">
-                مرحباً! لأبدأ المحادثة، يرجى إدخال رابط الـ Webhook الخاص بـ n8n في الأعلى وتفعيل الـ workflow.
+                مرحباً! لأبدأ المحادثة، يرجى إدخال رابط الـ Webhook الخاص بـ n8n في الأعلى.
                 <div class="timestamp" id="initialTimestamp"></div>
             </div>
             <div class="message error-message">
-                ملاحظة: هناك مشكلة في تشغيل الـ workflow في n8n. يرجى التأكد من:
-                <br>1- تفعيل الـ workflow
-                <br>2- التحقق من صحة تكوين الـ nodes
-                <br>3- التأكد من أن الـ webhook node معرّف بشكل صحيح
+                ملاحظة: بسبب استضافة الصفحة على GitHub Pages، قد تحتاج إلى استخدام CORS Proxy أو ضبط إعدادات CORS في n8n.
             </div>
         </div>
         
@@ -324,6 +339,7 @@
             const statusText = document.getElementById('statusText');
             const webhookUrlInput = document.getElementById('webhookUrl');
             const testButton = document.getElementById('testButton');
+            const useProxyCheckbox = document.getElementById('useProxy');
             
             let n8nWebhookURL = '';
             let isConnected = false;
@@ -365,41 +381,25 @@
                     return;
                 }
                 
-                n8nWebhookURL = http://107.150.1.238:5678/webhook-test/4566475e-0d85-428b-84cc-a817d8b55a45;
+                n8nWebhookURL = url;
                 testButton.disabled = true;
                 testButton.textContent = 'جاري الاختبار...';
                 
                 // اختبار الاتصال بإرسال رسالة تجريبية
-                const testData = {
-                    test: true,
-                    message: 'رسالة اختبار للاتصال',
-                    timestamp: new Date().toISOString()
-                };
-                
-                fetch(n8nWebhookURL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(testData)
-                })
-                .then(response => {
-                    if (response.ok) {
+                sendTestToN8N('رسالة اختبار للاتصال')
+                    .then(() => {
                         setConnectionStatus(true);
                         addMessage('تم الاتصال بنجاح بـ n8n! يمكنك الآن بدء المحادثة.', 'bot');
-                    } else {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                })
-                .catch(error => {
-                    console.error('Connection test failed:', error);
-                    setConnectionStatus(false);
-                    addMessage('فشل الاتصال بـ n8n. يرجى التحقق من الرابط وتفعيل الـ workflow.', 'bot', true);
-                })
-                .finally(() => {
-                    testButton.disabled = false;
-                    testButton.textContent = 'اختبار الاتصال';
-                });
+                    })
+                    .catch(error => {
+                        console.error('Connection test failed:', error);
+                        setConnectionStatus(false);
+                        addMessage('فشل الاتصال بـ n8n: ' + error.message, 'bot', true);
+                    })
+                    .finally(() => {
+                        testButton.disabled = false;
+                        testButton.textContent = 'اختبار الاتصال';
+                    });
             }
             
             function sendMessage() {
@@ -455,19 +455,48 @@
                 isConnected = connected;
                 if (connected) {
                     statusDot.classList.remove('offline');
-                    statusDot.classList.add('online');
                     statusText.textContent = 'متصل';
                     chatInput.disabled = false;
                     sendButton.disabled = false;
                     chatInput.placeholder = 'اكتب رسالتك هنا...';
                 } else {
-                    statusDot.classList.remove('online');
                     statusDot.classList.add('offline');
                     statusText.textContent = 'غير متصل';
                     chatInput.disabled = true;
                     sendButton.disabled = true;
                     chatInput.placeholder = 'يجب الاتصال أولاً بـ n8n';
                 }
+            }
+            
+            function getProxyUrl(url) {
+                if (!useProxyCheckbox.checked) return url;
+                
+                // استخدام CORS Proxy - هذه خدمة مجانية للاختبار فقط
+                return 'https://cors-anywhere.herokuapp.com/' + url;
+            }
+            
+            function sendTestToN8N(testMessage) {
+                const requestData = {
+                    test: true,
+                    message: testMessage,
+                    timestamp: new Date().toISOString()
+                };
+                
+                const url = getProxyUrl(n8nWebhookURL);
+                
+                return fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                });
             }
             
             function sendToN8N(message) {
@@ -477,10 +506,13 @@
                     sessionId: generateSessionId()
                 };
                 
-                fetch(n8nWebhookURL, {
+                const url = getProxyUrl(n8nWebhookURL);
+                
+                fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                     },
                     body: JSON.stringify(requestData)
                 })
@@ -509,7 +541,15 @@
                     typingIndicator.style.display = 'none';
                     
                     // إضافة رسالة خطأ
-                    addMessage('عذراً، حدث خطأ في الاتصال. يرجى التحقق من تكوين الـ workflow في n8n.', 'bot', true);
+                    let errorMessage = 'عذراً، حدث خطأ في الاتصال. ';
+                    
+                    if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
+                        errorMessage += 'يبدو أن هناك مشكلة في CORS. جرب تفعيل خيار CORS Proxy.';
+                    } else {
+                        errorMessage += error.message;
+                    }
+                    
+                    addMessage(errorMessage, 'bot', true);
                     
                     // إعادة تمكين زر الإرسال
                     sendButton.disabled = false;
