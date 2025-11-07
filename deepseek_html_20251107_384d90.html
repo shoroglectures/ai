@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محادثة الذكاء الاصطناعي - متصلة بـ n8n</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --user-msg-bg: #e3f2fd;
+            --bot-msg-bg: #f5f5f5;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --error-color: #f44336;
+            --success-color: #4caf50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: var(--dark-color);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        
+        .status-indicator {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--success-color);
+        }
+        
+        .status-dot.offline {
+            background-color: var(--error-color);
+        }
+        
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            background-color: white;
+            box-shadow: var(--shadow);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: 18px;
+            position: relative;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .user-message {
+            align-self: flex-end;
+            background-color: var(--user-msg-bg);
+            border-bottom-right-radius: 4px;
+        }
+        
+        .bot-message {
+            align-self: flex-start;
+            background-color: var(--bot-msg-bg);
+            border-bottom-left-radius: 4px;
+        }
+        
+        .error-message {
+            align-self: center;
+            background-color: #ffebee;
+            color: var(--error-color);
+            max-width: 90%;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .typing-indicator {
+            align-self: flex-start;
+            background-color: var(--bot-msg-bg);
+            padding: 0.75rem 1rem;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            display: none;
+        }
+        
+        .typing-dots {
+            display: flex;
+        }
+        
+        .typing-dot {
+            height: 8px;
+            width: 8px;
+            border-radius: 50%;
+            background-color: #888;
+            margin: 0 2px;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        
+        .chat-input-container {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid #e0e0e0;
+            background-color: white;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            outline: none;
+            font-size: 1rem;
+            resize: none;
+            max-height: 120px;
+            transition: border-color 0.3s;
+        }
+        
+        .chat-input:focus {
+            border-color: var(--primary-color);
+        }
+        
+        .send-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            margin-right: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        
+        .send-button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .send-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .timestamp {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 0.25rem;
+            text-align: right;
+        }
+        
+        .empty-state {
+            text-align: center;
+            color: #888;
+            padding: 2rem;
+            display: none;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .chat-container {
+                margin: 0;
+                border-radius: 0;
+                height: 100%;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+            
+            .status-indicator {
+                position: static;
+                justify-content: center;
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>محادثة الذكاء الاصطناعي</h1>
+        <p>متصل بـ n8n</p>
+        <div class="status-indicator">
+            <div class="status-dot" id="statusDot"></div>
+            <span id="statusText">متصل</span>
+        </div>
+    </div>
+    
+    <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+            <!-- الرسائل ستظهر هنا -->
+            <div class="message bot-message">
+                مرحباً! أنا مساعدك الذكي المتصل بـ n8n. كيف يمكنني مساعدتك اليوم؟
+                <div class="timestamp" id="initialTimestamp"></div>
+            </div>
+        </div>
+        
+        <div class="empty-state" id="emptyState">
+            لا توجد رسائل بعد. ابدأ المحادثة بإرسال رسالة!
+        </div>
+        
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-dots">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+        
+        <div class="chat-input-container">
+            <textarea class="chat-input" id="chatInput" placeholder="اكتب رسالتك هنا..." rows="1"></textarea>
+            <button class="send-button" id="sendButton">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.getElementById('chatMessages');
+            const chatInput = document.getElementById('chatInput');
+            const sendButton = document.getElementById('sendButton');
+            const typingIndicator = document.getElementById('typingIndicator');
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            const emptyState = document.getElementById('emptyState');
+            
+            // حالة الاتصال
+            let isConnected = false;
+            
+            // تعيين الطابع الزمني للرسالة الافتتاحية
+            document.getElementById('initialTimestamp').textContent = getCurrentTime();
+            
+            // ضبط ارتفاع حقل الإدخال تلقائياً
+            chatInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+            
+            // إرسال الرسالة عند الضغط على زر الإرسال
+            sendButton.addEventListener('click', sendMessage);
+            
+            // إرسال الرسالة عند الضغط على Enter (ولكن مع Shift+Enter لسطر جديد)
+            chatInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+            
+            // التحقق من اتصال n8n عند التحميل
+            checkN8NConnection();
+            
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (message === '') return;
+                
+                // إضافة رسالة المستخدم إلى المحادثة
+                addMessage(message, 'user');
+                
+                // مسح حقل الإدخال وإعادة ضبط ارتفاعه
+                chatInput.value = '';
+                chatInput.style.height = 'auto';
+                
+                // تعطيل الزر أثناء المعالجة
+                sendButton.disabled = true;
+                
+                // إخفاء حالة عدم وجود رسائل
+                emptyState.style.display = 'none';
+                
+                // إظهار مؤشر الكتابة
+                typingIndicator.style.display = 'block';
+                scrollToBottom();
+                
+                // إرسال الرسالة إلى n8n
+                sendToN8N(message);
+            }
+            
+            function addMessage(text, sender, isError = false) {
+                const messageDiv = document.createElement('div');
+                
+                if (isError) {
+                    messageDiv.classList.add('message', 'error-message');
+                } else {
+                    messageDiv.classList.add('message');
+                    messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+                }
+                
+                messageDiv.innerHTML = text + `<div class="timestamp">${getCurrentTime()}</div>`;
+                
+                chatMessages.appendChild(messageDiv);
+                scrollToBottom();
+            }
+            
+            function scrollToBottom() {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            function getCurrentTime() {
+                const now = new Date();
+                return now.getHours().toString().padStart(2, '0') + ':' + 
+                       now.getMinutes().toString().padStart(2, '0');
+            }
+            
+            function checkN8NConnection() {
+                // هذه دالة للتحقق من اتصال n8n
+                // يمكنك تعديلها حسب احتياجاتك
+                const testMessage = { test: true };
+                
+                fetch(n8nWebhookURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testMessage)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        setConnectionStatus(true);
+                    } else {
+                        setConnectionStatus(false);
+                    }
+                })
+                .catch(error => {
+                    console.error('Connection test failed:', error);
+                    setConnectionStatus(false);
+                });
+            }
+            
+            function setConnectionStatus(connected) {
+                isConnected = connected;
+                if (connected) {
+                    statusDot.classList.remove('offline');
+                    statusText.textContent = 'متصل';
+                } else {
+                    statusDot.classList.add('offline');
+                    statusText.textContent = 'غير متصل';
+                    
+                    // إضافة رسالة تحذيرية
+                    addMessage('تحذير: الخدمة غير متصلة حاليًا. قد لا تعمل المحادثة بشكل صحيح.', 'bot', true);
+                }
+            }
+            
+            function sendToN8N(message) {
+                // استبدل هذا الرابط بـ Webhook URL الخاص بك في n8n
+                const n8nWebhookURL = 'https://your-n8n-instance.com/webhook/your-unique-id';
+                
+                // التحقق من الاتصال أولاً
+                if (!isConnected) {
+                    // إخفاء مؤشر الكتابة
+                    typingIndicator.style.display = 'none';
+                    
+                    // إضافة رسالة خطأ
+                    addMessage('عذرًا، لا يمكن إرسال الرسالة لأن الخدمة غير متصلة. يرجى المحاولة مرة أخرى لاحقًا.', 'bot', true);
+                    
+                    // إعادة تمكين زر الإرسال
+                    sendButton.disabled = false;
+                    return;
+                }
+                
+                // إعداد البيانات المرسلة إلى n8n
+                const requestData = {
+                    message: message,
+                    timestamp: new Date().toISOString(),
+                    sessionId: generateSessionId() // إضافة معرف جلسة للمتابعة
+                };
+                
+                // إرسال الطلب إلى n8n
+                fetch(n8nWebhookURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // إخفاء مؤشر الكتابة
+                    typingIndicator.style.display = 'none';
+                    
+                    // إضافة رد الذكاء الاصطناعي إلى المحادثة
+                    // تأكد من أن n8n يرجع الرد في حقل 'response' أو قم بتعديل هذا حسب هيكل الاستجابة
+                    const aiResponse = data.response || data.answer || data.message || 'عذراً، لم أتلق رداً من الخادم.';
+                    addMessage(aiResponse, 'bot');
+                    
+                    // إعادة تمكين زر الإرسال
+                    sendButton.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    
+                    // إخفاء مؤشر الكتابة
+                    typingIndicator.style.display = 'none';
+                    
+                    // تحديث حالة الاتصال
+                    setConnectionStatus(false);
+                    
+                    // إضافة رسالة خطأ
+                    addMessage('عذراً، حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.', 'bot', true);
+                    
+                    // إعادة تمكين زر الإرسال
+                    sendButton.disabled = false;
+                });
+            }
+            
+            function generateSessionId() {
+                // إنشاء معرف جلسة فريد (يمكن استخدامه في n8n لمتابعة المحادثة)
+                return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            }
+        });
+    </script>
+</body>
+</html>
