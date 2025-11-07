@@ -206,18 +206,39 @@
             text-align: right;
         }
         
-        .empty-state {
-            text-align: center;
-            color: #888;
-            padding: 2rem;
-            display: none;
+        .config-panel {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
         }
         
-        .welcome-message {
-            text-align: center;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-            font-weight: bold;
+        .config-form {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .url-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .test-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .test-button:hover {
+            background-color: #218838;
         }
         
         @media (max-width: 768px) {
@@ -236,6 +257,10 @@
                 justify-content: center;
                 margin-top: 0.5rem;
             }
+            
+            .config-form {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -244,22 +269,30 @@
         <h1>محادثة الذكاء الاصطناعي</h1>
         <p>متصل بـ n8n</p>
         <div class="status-indicator">
-            <div class="status-dot" id="statusDot"></div>
-            <span id="statusText">متصل</span>
+            <div class="status-dot offline" id="statusDot"></div>
+            <span id="statusText">غير متصل</span>
+        </div>
+    </div>
+    
+    <div class="config-panel">
+        <div class="config-form">
+            <input type="url" class="url-input" id="webhookUrl" placeholder="أدخل رابط الـ Webhook الخاص بـ n8n" value="">
+            <button class="test-button" id="testButton">اختبار الاتصال</button>
         </div>
     </div>
     
     <div class="chat-container">
         <div class="chat-messages" id="chatMessages">
-            <!-- الرسائل ستظهر هنا -->
             <div class="message bot-message">
-                مرحباً! أنا مساعدك الذكي المتصل بـ n8n. كيف يمكنني مساعدتك اليوم؟
+                مرحباً! لأبدأ المحادثة، يرجى إدخال رابط الـ Webhook الخاص بـ n8n في الأعلى وتفعيل الـ workflow.
                 <div class="timestamp" id="initialTimestamp"></div>
             </div>
-        </div>
-        
-        <div class="empty-state" id="emptyState">
-            لا توجد رسائل بعد. ابدأ المحادثة بإرسال رسالة!
+            <div class="message error-message">
+                ملاحظة: هناك مشكلة في تشغيل الـ workflow في n8n. يرجى التأكد من:
+                <br>1- تفعيل الـ workflow
+                <br>2- التحقق من صحة تكوين الـ nodes
+                <br>3- التأكد من أن الـ webhook node معرّف بشكل صحيح
+            </div>
         </div>
         
         <div class="typing-indicator" id="typingIndicator">
@@ -271,8 +304,8 @@
         </div>
         
         <div class="chat-input-container">
-            <textarea class="chat-input" id="chatInput" placeholder="اكتب رسالتك هنا..." rows="1"></textarea>
-            <button class="send-button" id="sendButton">
+            <textarea class="chat-input" id="chatInput" placeholder="اكتب رسالتك هنا..." rows="1" disabled></textarea>
+            <button class="send-button" id="sendButton" disabled>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -289,9 +322,10 @@
             const typingIndicator = document.getElementById('typingIndicator');
             const statusDot = document.getElementById('statusDot');
             const statusText = document.getElementById('statusText');
-            const emptyState = document.getElementById('emptyState');
+            const webhookUrlInput = document.getElementById('webhookUrl');
+            const testButton = document.getElementById('testButton');
             
-            // حالة الاتصال
+            let n8nWebhookURL = '';
             let isConnected = false;
             
             // تعيين الطابع الزمني للرسالة الافتتاحية
@@ -306,7 +340,7 @@
             // إرسال الرسالة عند الضغط على زر الإرسال
             sendButton.addEventListener('click', sendMessage);
             
-            // إرسال الرسالة عند الضغط على Enter (ولكن مع Shift+Enter لسطر جديد)
+            // إرسال الرسالة عند الضغط على Enter
             chatInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -314,12 +348,63 @@
                 }
             });
             
-            // التحقق من اتصال n8n عند التحميل
-            checkN8NConnection();
+            // اختبار الاتصال بـ n8n
+            testButton.addEventListener('click', testConnection);
+            
+            // السماح بإدخال URL أيضاً بالضغط على Enter
+            webhookUrlInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    testConnection();
+                }
+            });
+            
+            function testConnection() {
+                const url = webhookUrlInput.value.trim();
+                if (!url) {
+                    alert('يرجى إدخال رابط الـ Webhook أولاً');
+                    return;
+                }
+                
+                n8nWebhookURL = http://107.150.1.238:5678/webhook-test/4566475e-0d85-428b-84cc-a817d8b55a45;
+                testButton.disabled = true;
+                testButton.textContent = 'جاري الاختبار...';
+                
+                // اختبار الاتصال بإرسال رسالة تجريبية
+                const testData = {
+                    test: true,
+                    message: 'رسالة اختبار للاتصال',
+                    timestamp: new Date().toISOString()
+                };
+                
+                fetch(n8nWebhookURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testData)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        setConnectionStatus(true);
+                        addMessage('تم الاتصال بنجاح بـ n8n! يمكنك الآن بدء المحادثة.', 'bot');
+                    } else {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Connection test failed:', error);
+                    setConnectionStatus(false);
+                    addMessage('فشل الاتصال بـ n8n. يرجى التحقق من الرابط وتفعيل الـ workflow.', 'bot', true);
+                })
+                .finally(() => {
+                    testButton.disabled = false;
+                    testButton.textContent = 'اختبار الاتصال';
+                });
+            }
             
             function sendMessage() {
                 const message = chatInput.value.trim();
-                if (message === '') return;
+                if (message === '' || !isConnected) return;
                 
                 // إضافة رسالة المستخدم إلى المحادثة
                 addMessage(message, 'user');
@@ -330,9 +415,7 @@
                 
                 // تعطيل الزر أثناء المعالجة
                 sendButton.disabled = true;
-                
-                // إخفاء حالة عدم وجود رسائل
-                emptyState.style.display = 'none';
+                chatInput.disabled = true;
                 
                 // إظهار مؤشر الكتابة
                 typingIndicator.style.display = 'block';
@@ -368,70 +451,32 @@
                        now.getMinutes().toString().padStart(2, '0');
             }
             
-            function checkN8NConnection() {
-                // هذه دالة للتحقق من اتصال n8n
-                // يمكنك تعديلها حسب احتياجاتك
-                const testMessage = { test: true };
-                
-                fetch(n8nWebhookURL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(testMessage)
-                })
-                .then(response => {
-                    if (response.ok) {
-                        setConnectionStatus(true);
-                    } else {
-                        setConnectionStatus(false);
-                    }
-                })
-                .catch(error => {
-                    console.error('Connection test failed:', error);
-                    setConnectionStatus(false);
-                });
-            }
-            
             function setConnectionStatus(connected) {
                 isConnected = connected;
                 if (connected) {
                     statusDot.classList.remove('offline');
+                    statusDot.classList.add('online');
                     statusText.textContent = 'متصل';
+                    chatInput.disabled = false;
+                    sendButton.disabled = false;
+                    chatInput.placeholder = 'اكتب رسالتك هنا...';
                 } else {
+                    statusDot.classList.remove('online');
                     statusDot.classList.add('offline');
                     statusText.textContent = 'غير متصل';
-                    
-                    // إضافة رسالة تحذيرية
-                    addMessage('تحذير: الخدمة غير متصلة حاليًا. قد لا تعمل المحادثة بشكل صحيح.', 'bot', true);
+                    chatInput.disabled = true;
+                    sendButton.disabled = true;
+                    chatInput.placeholder = 'يجب الاتصال أولاً بـ n8n';
                 }
             }
             
             function sendToN8N(message) {
-                // استبدل هذا الرابط بـ Webhook URL الخاص بك في n8n
-                const n8nWebhookURL = 'http://107.150.1.238:5678/webhook-test/4566475e-0d85-428b-84cc-a817d8b55a45';
-                
-                // التحقق من الاتصال أولاً
-                if (!isConnected) {
-                    // إخفاء مؤشر الكتابة
-                    typingIndicator.style.display = 'none';
-                    
-                    // إضافة رسالة خطأ
-                    addMessage('عذرًا، لا يمكن إرسال الرسالة لأن الخدمة غير متصلة. يرجى المحاولة مرة أخرى لاحقًا.', 'bot', true);
-                    
-                    // إعادة تمكين زر الإرسال
-                    sendButton.disabled = false;
-                    return;
-                }
-                
-                // إعداد البيانات المرسلة إلى n8n
                 const requestData = {
                     message: message,
                     timestamp: new Date().toISOString(),
-                    sessionId: generateSessionId() // إضافة معرف جلسة للمتابعة
+                    sessionId: generateSessionId()
                 };
                 
-                // إرسال الطلب إلى n8n
                 fetch(n8nWebhookURL, {
                     method: 'POST',
                     headers: {
@@ -441,7 +486,7 @@
                 })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     return response.json();
                 })
@@ -450,12 +495,12 @@
                     typingIndicator.style.display = 'none';
                     
                     // إضافة رد الذكاء الاصطناعي إلى المحادثة
-                    // تأكد من أن n8n يرجع الرد في حقل 'response' أو قم بتعديل هذا حسب هيكل الاستجابة
-                    const aiResponse = data.response || data.answer || data.message || 'عذراً، لم أتلق رداً من الخادم.';
+                    const aiResponse = data.response || data.answer || data.message || 'تم استلام رسالتك بنجاح.';
                     addMessage(aiResponse, 'bot');
                     
                     // إعادة تمكين زر الإرسال
                     sendButton.disabled = false;
+                    chatInput.disabled = false;
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -463,19 +508,16 @@
                     // إخفاء مؤشر الكتابة
                     typingIndicator.style.display = 'none';
                     
-                    // تحديث حالة الاتصال
-                    setConnectionStatus(false);
-                    
                     // إضافة رسالة خطأ
-                    addMessage('عذراً، حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.', 'bot', true);
+                    addMessage('عذراً، حدث خطأ في الاتصال. يرجى التحقق من تكوين الـ workflow في n8n.', 'bot', true);
                     
                     // إعادة تمكين زر الإرسال
                     sendButton.disabled = false;
+                    chatInput.disabled = false;
                 });
             }
             
             function generateSessionId() {
-                // إنشاء معرف جلسة فريد (يمكن استخدامه في n8n لمتابعة المحادثة)
                 return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             }
         });
