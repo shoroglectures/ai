@@ -3,424 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدربة الذكاء الاصطناعي اشراقة</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>شات متقدم مع n8n</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Tajawal', sans-serif;
-        }
-
-        body {
-            background-color: #f7f7f8;
-            color: #1e293b;
-            direction: rtl;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* الشريط العلوي */
-        .navbar {
-            background-color: #ffffff;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #1e293b;
-        }
-
-        .nav-icons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #4b5563;
-            font-size: 1.25rem;
-            padding: 5px;
-            border-radius: 5px;
-            transition: background-color 0.2s;
-        }
-
-        .icon-btn:hover {
-            background-color: #f1f5f9;
-        }
-
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            left: 0;
-            background-color: #ffffff;
-            min-width: 160px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        .dropdown-content a {
-            color: #1e293b;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            font-size: 0.9rem;
-            transition: background-color 0.2s;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f1f5f9;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        /* منطقة المحتوى الرئيسية */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .main-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: #1e293b;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: #64748b;
-            margin-bottom: 40px;
-            line-height: 1.6;
-        }
-
-        .add-btn {
-            background-color: #10a37f;
-            color: white;
-            border: none;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            font-size: 1.8rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: background-color 0.2s, transform 0.2s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .add-btn:hover {
-            background-color: #0d8c6d;
-            transform: scale(1.05);
-        }
-
-        /* منطقة المحادثة */
-        .chat-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            display: none;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .chat-header {
-            padding: 15px 20px;
-            background-color: #ffffff;
-            border-bottom: 1px solid #e5e7eb;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chat-title {
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .new-chat-btn {
-            background-color: #10a37f;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: background-color 0.2s;
-        }
-
-        .new-chat-btn:hover {
-            background-color: #0d8c6d;
-        }
-
-        .messages-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 15px 20px;
-            border-radius: 10px;
-            line-height: 1.5;
-        }
-
-        .user-message {
-            align-self: flex-end;
-            background-color: #10a37f;
-            color: white;
-            border-top-right-radius: 0;
-        }
-
-        .ai-message {
-            align-self: flex-start;
-            background-color: #f1f5f9;
-            color: #1e293b;
-            border-top-left-radius: 0;
-        }
-
-        .input-area {
-            padding: 20px;
-            background-color: #ffffff;
-            border-top: 1px solid #e5e7eb;
-            display: flex;
-            gap: 10px;
-        }
-
-        .message-input {
-            flex: 1;
-            padding: 12px 16px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 1rem;
-            resize: none;
-            height: 56px;
-            direction: rtl;
-        }
-
-        .message-input:focus {
-            outline: none;
-            border-color: #10a37f;
-        }
-
-        .send-btn {
-            background-color: #10a37f;
-            color: white;
-            border: none;
-            width: 56px;
-            height: 56px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2rem;
-            transition: background-color 0.2s;
-        }
-
-        .send-btn:hover {
-            background-color: #0d8c6d;
-        }
-
-        .send-btn:disabled {
-            background-color: #9ca3af;
-            cursor: not-allowed;
-        }
-
-        /* التصميم المتجاوب */
-        @media (max-width: 768px) {
-            .main-title {
-                font-size: 2rem;
-            }
-            
-            .subtitle {
-                font-size: 1rem;
-            }
-            
-            .message {
-                max-width: 90%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .navbar {
-                padding: 10px 15px;
-            }
-            
-            .logo {
-                font-size: 1.1rem;
-            }
-            
-            .main-title {
-                font-size: 1.7rem;
-            }
-            
-            .message {
-                max-width: 95%;
-            }
-        }
+        /* Add the same CSS styles from above */
+        /* You can enhance with typing indicators, etc. */
     </style>
 </head>
 <body>
-    <!-- الشريط العلوي -->
-    <nav class="navbar">
-        <div class="logo">مدربة الذكاء الاصطناعي اشراقة</div>
-        <div class="nav-icons">
-            <div class="dropdown">
-                <button class="icon-btn">
-                    <i class="fas fa-user"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a href="#">تسجيل الدخول</a>
-                    <a href="#">إنشاء حساب</a>
-                </div>
-            </div>
-            <button class="icon-btn">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-    </nav>
-
-    <!-- منطقة المحتوى الرئيسية -->
-    <div class="main-content" id="mainContent">
-        <h1 class="main-title">كيف يمكنني المساعدة؟</h1>
-        <p class="subtitle">ابدأ محادثة جديدة مع مدربة الذكاء الاصطناعي اشراقة , المساعدة التدريبية للمدربة شروق الحربي</p>
-        <button class="add-btn" id="newChatBtn">+</button>
-    </div>
-
-    <!-- منطقة المحادثة -->
-    <div class="chat-container" id="chatContainer">
+    <div class="chat-container">
         <div class="chat-header">
-            <div class="chat-title">محادثة جديدة</div>
-            <button class="new-chat-btn" id="backToMainBtn">محادثة جديدة</button>
+            <h2>شات الذكاء الاصطناعي المتقدم</h2>
+            <div id="connectionStatus">🟢 متصل</div>
         </div>
-        <div class="messages-container" id="messagesContainer">
-            <!-- الرسائل ستظهر هنا ديناميكياً -->
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                أهلاً وسهلاً! أنا مساعدك الذكي. كيف يمكنني مساعدتك اليوم؟
+            </div>
         </div>
-        <div class="input-area">
-            <textarea class="message-input" id="messageInput" placeholder="اكتب رسالتك هنا..."></textarea>
-            <button class="send-btn" id="sendBtn">
-                <i class="fas fa-paper-plane"></i>
-            </button>
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="اكتب رسالتك هنا..." />
+            <button id="sendButton">إرسال</button>
+            <button id="clearButton">مسح المحادثة</button>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // العناصر الرئيسية في الواجهة
-            const mainContent = document.getElementById('mainContent');
-            const chatContainer = document.getElementById('chatContainer');
-            const newChatBtn = document.getElementById('newChatBtn');
-            const backToMainBtn = document.getElementById('backToMainBtn');
-            const messagesContainer = document.getElementById('messagesContainer');
-            const messageInput = document.getElementById('messageInput');
-            const sendBtn = document.getElementById('sendBtn');
-            
-            // الانتقال إلى شاشة المحادثة
-            newChatBtn.addEventListener('click', function() {
-                mainContent.style.display = 'none';
-                chatContainer.style.display = 'flex';
-                messageInput.focus();
-            });
-            
-            // العودة إلى الشاشة الرئيسية
-            backToMainBtn.addEventListener('click', function() {
-                chatContainer.style.display = 'none';
-                mainContent.style.display = 'flex';
-                // مسح المحادثة الحالية
-                messagesContainer.innerHTML = '';
-            });
-            
-            // إرسال رسالة
-            function sendMessage() {
-                const messageText = messageInput.value.trim();
-                if (messageText === '') return;
+        class ChatApp {
+            constructor() {
+                this.n8nWebhookURL = 'http://n8n.shorog.com/webhook-test/shorogai';
+                this.chatHistory = [];
+                this.init();
+            }
+
+            init() {
+                this.chatMessages = document.getElementById('chatMessages');
+                this.messageInput = document.getElementById('messageInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.clearButton = document.getElementById('clearButton');
+                this.connectionStatus = document.getElementById('connectionStatus');
+
+                this.setupEventListeners();
+                this.loadChatHistory();
+            }
+
+            setupEventListeners() {
+                this.sendButton.addEventListener('click', () => this.sendMessage());
+                this.clearButton.addEventListener('click', () => this.clearChat());
+                this.messageInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+            }
+
+            async sendMessage() {
+                const message = this.messageInput.value.trim();
+                if (!message) return;
+
+                this.addMessage(message, 'user');
+                this.messageInput.value = '';
                 
-                // إضافة رسالة المستخدم
-                addMessage(messageText, 'user');
-                messageInput.value = '';
+                const loadingId = this.showLoading();
                 
-                // تعطيل زر الإرسال أثناء معالجة الرد
-                sendBtn.disabled = true;
-                
-                // إرسال الطلب إلى n8n webhook
-                fetch('http://n8n.shorog.com/webhook-test/shorogai', {
+                try {
+                    const response = await this.sendToN8n(message);
+                    this.hideLoading(loadingId);
+                    
+                    const reply = response.reply || 
+                                 response.response || 
+                                 response.message || 
+                                 'شكراً على رسالتك!';
+                    
+                    this.addMessage(reply, 'bot');
+                    this.saveChatHistory();
+                    
+                } catch (error) {
+                    this.hideLoading(loadingId);
+                    this.addMessage('عذراً، حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.', 'bot');
+                }
+            }
+
+            async sendToN8n(message) {
+                const payload = {
+                    message: message,
+                    user: 'web_chat_user',
+                    timestamp: new Date().toISOString(),
+                    type: 'chat_message',
+                    chatHistory: this.chatHistory.slice(-5) // Last 5 messages for context
+                };
+
+                const response = await fetch(this.n8nWebhookURL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ message: messageText })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // إضافة رد الذكاء الاصطناعي
-                    addMessage(data.response || 'عذراً، لم أتمكن من معالجة طلبك.', 'ai');
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    addMessage('عذراً، حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.', 'ai');
-                })
-                .finally(() => {
-                    sendBtn.disabled = false;
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                return await response.json();
+            }
+
+            addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+                
+                const timestamp = new Date().toLocaleTimeString('ar-SA');
+                messageDiv.innerHTML = `
+                    <div class="message-text">${text}</div>
+                    <div class="message-time">${timestamp}</div>
+                `;
+                
+                this.chatMessages.appendChild(messageDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                
+                // Save to history
+                this.chatHistory.push({
+                    sender: sender,
+                    text: text,
+                    timestamp: new Date().toISOString()
                 });
             }
-            
-            // إضافة رسالة إلى منطقة المحادثة
-            function addMessage(text, sender) {
-                const messageDiv = document.createElement('div');
-                messageDiv.classList.add('message');
-                messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
-                messageDiv.textContent = text;
-                messagesContainer.appendChild(messageDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            showLoading() {
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'message bot-message loading';
+                loadingDiv.id = 'loading-' + Date.now();
+                loadingDiv.textContent = 'جاري المعالجة...';
+                this.chatMessages.appendChild(loadingDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                return loadingDiv.id;
             }
-            
-            // إرسال الرسالة عند النقر على زر الإرسال
-            sendBtn.addEventListener('click', sendMessage);
-            
-            // إرسال الرسالة عند الضغط على Enter
-            messageInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    sendMessage();
+
+            hideLoading(loadingId) {
+                const loadingElement = document.getElementById(loadingId);
+                if (loadingElement) {
+                    loadingElement.remove();
                 }
-            });
+            }
+
+            clearChat() {
+                this.chatMessages.innerHTML = '';
+                this.chatHistory = [];
+                localStorage.removeItem('chatHistory');
+                this.addMessage('مرحباً! كيف يمكنني مساعدتك اليوم؟', 'bot');
+            }
+
+            saveChatHistory() {
+                localStorage.setItem('chatHistory', JSON.stringify(this.chatHistory));
+            }
+
+            loadChatHistory() {
+                const saved = localStorage.getItem('chatHistory');
+                if (saved) {
+                    this.chatHistory = JSON.parse(saved);
+                    // Re-render chat history
+                    this.chatMessages.innerHTML = '';
+                    this.chatHistory.forEach(msg => {
+                        this.addMessage(msg.text, msg.sender);
+                    });
+                }
+            }
+        }
+
+        // Initialize the chat app when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new ChatApp();
         });
     </script>
 </body>
