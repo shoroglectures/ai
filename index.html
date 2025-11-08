@@ -3,481 +3,424 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محادثة الذكاء الاصطناعي - متصلة بـ n8n</title>
+    <title>مدربة الذكاء الاصطناعي اشراقة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #4a6fa5;
-            --secondary-color: #166088;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
-            --user-msg-bg: #e3f2fd;
-            --bot-msg-bg: #f5f5f5;
-            --shadow: 0 2px 10px rgba(0,0,0,0.1);
-            --error-color: #f44336;
-            --success-color: #4caf50;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', sans-serif;
         }
-        
+
         body {
-            background-color: #f0f2f5;
-            color: var(--dark-color);
+            background-color: #f7f7f8;
+            color: #1e293b;
+            direction: rtl;
             height: 100vh;
             display: flex;
             flex-direction: column;
         }
-        
-        .header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 1rem;
-            text-align: center;
-            box-shadow: var(--shadow);
-            position: relative;
-        }
-        
-        .status-indicator {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
+
+        /* الشريط العلوي */
+        .navbar {
+            background-color: #ffffff;
+            padding: 12px 20px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 0.8rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: var(--success-color);
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
         }
-        
-        .status-dot.offline {
-            background-color: var(--error-color);
+
+        .nav-icons {
+            display: flex;
+            gap: 15px;
         }
-        
-        .chat-container {
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #4b5563;
+            font-size: 1.25rem;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .icon-btn:hover {
+            background-color: #f1f5f9;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            left: 0;
+            background-color: #ffffff;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: #1e293b;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f5f9;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* منطقة المحتوى الرئيسية */
+        .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
             max-width: 800px;
             margin: 0 auto;
-            width: 100%;
-            background-color: white;
-            box-shadow: var(--shadow);
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .chat-messages {
-            flex: 1;
-            padding: 1rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .message {
-            max-width: 80%;
-            padding: 0.75rem 1rem;
-            border-radius: 18px;
-            position: relative;
-            word-wrap: break-word;
-            animation: fadeIn 0.3s ease-in;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .user-message {
-            align-self: flex-end;
-            background-color: var(--user-msg-bg);
-            border-bottom-right-radius: 4px;
-        }
-        
-        .bot-message {
-            align-self: flex-start;
-            background-color: var(--bot-msg-bg);
-            border-bottom-left-radius: 4px;
-        }
-        
-        .error-message {
-            align-self: center;
-            background-color: #ffebee;
-            color: var(--error-color);
-            max-width: 90%;
             text-align: center;
-            font-size: 0.9rem;
         }
-        
-        .typing-indicator {
-            align-self: flex-start;
-            background-color: var(--bot-msg-bg);
-            padding: 0.75rem 1rem;
-            border-radius: 18px;
-            border-bottom-left-radius: 4px;
-            display: none;
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #1e293b;
         }
-        
-        .typing-dots {
-            display: flex;
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #64748b;
+            margin-bottom: 40px;
+            line-height: 1.6;
         }
-        
-        .typing-dot {
-            height: 8px;
-            width: 8px;
-            border-radius: 50%;
-            background-color: #888;
-            margin: 0 2px;
-            animation: typing 1.4s infinite ease-in-out;
-        }
-        
-        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-        
-        @keyframes typing {
-            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
-            40% { transform: scale(1); opacity: 1; }
-        }
-        
-        .chat-input-container {
-            display: flex;
-            padding: 1rem;
-            border-top: 1px solid #e0e0e0;
-            background-color: white;
-        }
-        
-        .chat-input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 24px;
-            outline: none;
-            font-size: 1rem;
-            resize: none;
-            max-height: 120px;
-            transition: border-color 0.3s;
-        }
-        
-        .chat-input:focus {
-            border-color: var(--primary-color);
-        }
-        
-        .send-button {
-            background-color: var(--primary-color);
+
+        .add-btn {
+            background-color: #10a37f;
             color: white;
             border: none;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            margin-right: 0.5rem;
+            font-size: 1.8rem;
             cursor: pointer;
             display: flex;
-            align-items: center;
             justify-content: center;
-            transition: background-color 0.3s;
+            align-items: center;
+            transition: background-color 0.2s, transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        
-        .send-button:hover {
-            background-color: var(--secondary-color);
+
+        .add-btn:hover {
+            background-color: #0d8c6d;
+            transform: scale(1.05);
         }
-        
-        .send-button:disabled {
-            background-color: #cccccc;
+
+        /* منطقة المحادثة */
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .new-chat-btn {
+            background-color: #10a37f;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .new-chat-btn:hover {
+            background-color: #0d8c6d;
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 15px 20px;
+            border-radius: 10px;
+            line-height: 1.5;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: #10a37f;
+            color: white;
+            border-top-right-radius: 0;
+        }
+
+        .ai-message {
+            align-self: flex-start;
+            background-color: #f1f5f9;
+            color: #1e293b;
+            border-top-left-radius: 0;
+        }
+
+        .input-area {
+            padding: 20px;
+            background-color: #ffffff;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: none;
+            height: 56px;
+            direction: rtl;
+        }
+
+        .message-input:focus {
+            outline: none;
+            border-color: #10a37f;
+        }
+
+        .send-btn {
+            background-color: #10a37f;
+            color: white;
+            border: none;
+            width: 56px;
+            height: 56px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            transition: background-color 0.2s;
+        }
+
+        .send-btn:hover {
+            background-color: #0d8c6d;
+        }
+
+        .send-btn:disabled {
+            background-color: #9ca3af;
             cursor: not-allowed;
         }
-        
-        .timestamp {
-            font-size: 0.7rem;
-            color: #888;
-            margin-top: 0.25rem;
-            text-align: right;
-        }
-        
-        .empty-state {
-            text-align: center;
-            color: #888;
-            padding: 2rem;
-            display: none;
-        }
-        
-        .welcome-message {
-            text-align: center;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-        
+
+        /* التصميم المتجاوب */
         @media (max-width: 768px) {
-            .chat-container {
-                margin: 0;
-                border-radius: 0;
-                height: 100%;
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
             }
             
             .message {
                 max-width: 90%;
             }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 10px 15px;
+            }
             
-            .status-indicator {
-                position: static;
-                justify-content: center;
-                margin-top: 0.5rem;
+            .logo {
+                font-size: 1.1rem;
+            }
+            
+            .main-title {
+                font-size: 1.7rem;
+            }
+            
+            .message {
+                max-width: 95%;
             }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>محادثة الذكاء الاصطناعي</h1>
-        <p>متصل بـ n8n</p>
-        <div class="status-indicator">
-            <div class="status-dot" id="statusDot"></div>
-            <span id="statusText">متصل</span>
+    <!-- الشريط العلوي -->
+    <nav class="navbar">
+        <div class="logo">مدربة الذكاء الاصطناعي اشراقة</div>
+        <div class="nav-icons">
+            <div class="dropdown">
+                <button class="icon-btn">
+                    <i class="fas fa-user"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">تسجيل الدخول</a>
+                    <a href="#">إنشاء حساب</a>
+                </div>
+            </div>
+            <button class="icon-btn">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
+    </nav>
+
+    <!-- منطقة المحتوى الرئيسية -->
+    <div class="main-content" id="mainContent">
+        <h1 class="main-title">كيف يمكنني المساعدة؟</h1>
+        <p class="subtitle">ابدأ محادثة جديدة مع مدربة الذكاء الاصطناعي اشراقة , المساعدة التدريبية للمدربة شروق الحربي</p>
+        <button class="add-btn" id="newChatBtn">+</button>
     </div>
-    
-    <div class="chat-container">
-        <div class="chat-messages" id="chatMessages">
-            <!-- الرسائل ستظهر هنا -->
-            <div class="message bot-message">
-                مرحباً! أنا مساعدك الذكي المتصل بـ n8n. كيف يمكنني مساعدتك اليوم؟
-                <div class="timestamp" id="initialTimestamp"></div>
-            </div>
+
+    <!-- منطقة المحادثة -->
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <div class="chat-title">محادثة جديدة</div>
+            <button class="new-chat-btn" id="backToMainBtn">محادثة جديدة</button>
         </div>
-        
-        <div class="empty-state" id="emptyState">
-            لا توجد رسائل بعد. ابدأ المحادثة بإرسال رسالة!
+        <div class="messages-container" id="messagesContainer">
+            <!-- الرسائل ستظهر هنا ديناميكياً -->
         </div>
-        
-        <div class="typing-indicator" id="typingIndicator">
-            <div class="typing-dots">
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-            </div>
-        </div>
-        
-        <div class="chat-input-container">
-            <textarea class="chat-input" id="chatInput" placeholder="اكتب رسالتك هنا..." rows="1"></textarea>
-            <button class="send-button" id="sendButton">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+        <div class="input-area">
+            <textarea class="message-input" id="messageInput" placeholder="اكتب رسالتك هنا..."></textarea>
+            <button class="send-btn" id="sendBtn">
+                <i class="fas fa-paper-plane"></i>
             </button>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const chatMessages = document.getElementById('chatMessages');
-            const chatInput = document.getElementById('chatInput');
-            const sendButton = document.getElementById('sendButton');
-            const typingIndicator = document.getElementById('typingIndicator');
-            const statusDot = document.getElementById('statusDot');
-            const statusText = document.getElementById('statusText');
-            const emptyState = document.getElementById('emptyState');
+            // العناصر الرئيسية في الواجهة
+            const mainContent = document.getElementById('mainContent');
+            const chatContainer = document.getElementById('chatContainer');
+            const newChatBtn = document.getElementById('newChatBtn');
+            const backToMainBtn = document.getElementById('backToMainBtn');
+            const messagesContainer = document.getElementById('messagesContainer');
+            const messageInput = document.getElementById('messageInput');
+            const sendBtn = document.getElementById('sendBtn');
             
-            // حالة الاتصال
-            let isConnected = false;
-            
-            // تعيين الطابع الزمني للرسالة الافتتاحية
-            document.getElementById('initialTimestamp').textContent = getCurrentTime();
-            
-            // ضبط ارتفاع حقل الإدخال تلقائياً
-            chatInput.addEventListener('input', function() {
-                this.style.height = 'auto';
-                this.style.height = (this.scrollHeight) + 'px';
+            // الانتقال إلى شاشة المحادثة
+            newChatBtn.addEventListener('click', function() {
+                mainContent.style.display = 'none';
+                chatContainer.style.display = 'flex';
+                messageInput.focus();
             });
             
-            // إرسال الرسالة عند الضغط على زر الإرسال
-            sendButton.addEventListener('click', sendMessage);
+            // العودة إلى الشاشة الرئيسية
+            backToMainBtn.addEventListener('click', function() {
+                chatContainer.style.display = 'none';
+                mainContent.style.display = 'flex';
+                // مسح المحادثة الحالية
+                messagesContainer.innerHTML = '';
+            });
             
-            // إرسال الرسالة عند الضغط على Enter (ولكن مع Shift+Enter لسطر جديد)
-            chatInput.addEventListener('keydown', function(e) {
+            // إرسال رسالة
+            function sendMessage() {
+                const messageText = messageInput.value.trim();
+                if (messageText === '') return;
+                
+                // إضافة رسالة المستخدم
+                addMessage(messageText, 'user');
+                messageInput.value = '';
+                
+                // تعطيل زر الإرسال أثناء معالجة الرد
+                sendBtn.disabled = true;
+                
+                // إرسال الطلب إلى n8n webhook
+                fetch('http://n8n.shorog.com/webhook-test/shorogai', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: messageText })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // إضافة رد الذكاء الاصطناعي
+                    addMessage(data.response || 'عذراً، لم أتمكن من معالجة طلبك.', 'ai');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    addMessage('عذراً، حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.', 'ai');
+                })
+                .finally(() => {
+                    sendBtn.disabled = false;
+                });
+            }
+            
+            // إضافة رسالة إلى منطقة المحادثة
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
+                messageDiv.textContent = text;
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            
+            // إرسال الرسالة عند النقر على زر الإرسال
+            sendBtn.addEventListener('click', sendMessage);
+            
+            // إرسال الرسالة عند الضغط على Enter
+            messageInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     sendMessage();
                 }
             });
-            
-            // التحقق من اتصال n8n عند التحميل
-            checkN8NConnection();
-            
-            function sendMessage() {
-                const message = chatInput.value.trim();
-                if (message === '') return;
-                
-                // إضافة رسالة المستخدم إلى المحادثة
-                addMessage(message, 'user');
-                
-                // مسح حقل الإدخال وإعادة ضبط ارتفاعه
-                chatInput.value = '';
-                chatInput.style.height = 'auto';
-                
-                // تعطيل الزر أثناء المعالجة
-                sendButton.disabled = true;
-                
-                // إخفاء حالة عدم وجود رسائل
-                emptyState.style.display = 'none';
-                
-                // إظهار مؤشر الكتابة
-                typingIndicator.style.display = 'block';
-                scrollToBottom();
-                
-                // إرسال الرسالة إلى n8n
-                sendToN8N(message);
-            }
-            
-            function addMessage(text, sender, isError = false) {
-                const messageDiv = document.createElement('div');
-                
-                if (isError) {
-                    messageDiv.classList.add('message', 'error-message');
-                } else {
-                    messageDiv.classList.add('message');
-                    messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
-                }
-                
-                messageDiv.innerHTML = text + `<div class="timestamp">${getCurrentTime()}</div>`;
-                
-                chatMessages.appendChild(messageDiv);
-                scrollToBottom();
-            }
-            
-            function scrollToBottom() {
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-            
-            function getCurrentTime() {
-                const now = new Date();
-                return now.getHours().toString().padStart(2, '0') + ':' + 
-                       now.getMinutes().toString().padStart(2, '0');
-            }
-            
-            function checkN8NConnection() {
-                // هذه دالة للتحقق من اتصال n8n
-                // يمكنك تعديلها حسب احتياجاتك
-                const testMessage = { test: true };
-                
-                fetch(n8nWebhookURL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(testMessage)
-                })
-                .then(response => {
-                    if (response.ok) {
-                        setConnectionStatus(true);
-                    } else {
-                        setConnectionStatus(false);
-                    }
-                })
-                .catch(error => {
-                    console.error('Connection test failed:', error);
-                    setConnectionStatus(false);
-                });
-            }
-            
-            function setConnectionStatus(connected) {
-                isConnected = connected;
-                if (connected) {
-                    statusDot.classList.remove('offline');
-                    statusText.textContent = 'متصل';
-                } else {
-                    statusDot.classList.add('offline');
-                    statusText.textContent = 'غير متصل';
-                    
-                    // إضافة رسالة تحذيرية
-                    addMessage('تحذير: الخدمة غير متصلة حاليًا. قد لا تعمل المحادثة بشكل صحيح.', 'bot', true);
-                }
-            }
-            
-            function sendToN8N(message) {
-                // استبدل هذا الرابط بـ Webhook URL الخاص بك في n8n
-                const n8nWebhookURL = 'http://n8n.shorog.com/webhook-test/f242e2bf-4cc1-4c0a-972c-f99874e70559';
-                
-                // التحقق من الاتصال أولاً
-                if (!isConnected) {
-                    // إخفاء مؤشر الكتابة
-                    typingIndicator.style.display = 'none';
-                    
-                    // إضافة رسالة خطأ
-                    addMessage('عذرًا، لا يمكن إرسال الرسالة لأن الخدمة غير متصلة. يرجى المحاولة مرة أخرى لاحقًا.', 'bot', true);
-                    
-                    // إعادة تمكين زر الإرسال
-                    sendButton.disabled = false;
-                    return;
-                }
-                
-                // إعداد البيانات المرسلة إلى n8n
-                const requestData = {
-                    message: message,
-                    timestamp: new Date().toISOString(),
-                    sessionId: generateSessionId() // إضافة معرف جلسة للمتابعة
-                };
-                
-                // إرسال الطلب إلى n8n
-                fetch(n8nWebhookURL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestData)
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // إخفاء مؤشر الكتابة
-                    typingIndicator.style.display = 'none';
-                    
-                    // إضافة رد الذكاء الاصطناعي إلى المحادثة
-                    // تأكد من أن n8n يرجع الرد في حقل 'response' أو قم بتعديل هذا حسب هيكل الاستجابة
-                    const aiResponse = data.response || data.answer || data.message || 'عذراً، لم أتلق رداً من الخادم.';
-                    addMessage(aiResponse, 'bot');
-                    
-                    // إعادة تمكين زر الإرسال
-                    sendButton.disabled = false;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    
-                    // إخفاء مؤشر الكتابة
-                    typingIndicator.style.display = 'none';
-                    
-                    // تحديث حالة الاتصال
-                    setConnectionStatus(false);
-                    
-                    // إضافة رسالة خطأ
-                    addMessage('عذراً، حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.', 'bot', true);
-                    
-                    // إعادة تمكين زر الإرسال
-                    sendButton.disabled = false;
-                });
-            }
-            
-            function generateSessionId() {
-                // إنشاء معرف جلسة فريد (يمكن استخدامه في n8n لمتابعة المحادثة)
-                return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            }
         });
     </script>
 </body>
