@@ -1,41 +1,423 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar" dir="rtl">
 <head>
-    <title>شات بسيط</title>
-</head>
-<body>
-    <h2>شات اختبار n8n</h2>
-    <input type="text" id="messageInput" placeholder="اكتب رسالة">
-    <button onclick="sendMessage()">إرسال</button>
-    <div id="result"></div>
-
-    <script>
-        async function sendMessage() {
-            const message = document.getElementById('messageInput').value;
-            const resultDiv = document.getElementById('result');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شات الذكاء الاصطناعي - شروق</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .chat-container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 85vh;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .chat-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .chat-header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            padding: 10px;
+            background: #e7f3ff;
+            border-bottom: 1px solid #b3d9ff;
+            justify-content: center;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #28a745;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+            background: #f8f9fa;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            max-width: 75%;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .user-message {
+            margin-left: auto;
+        }
+        
+        .user-bubble {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 20px 20px 5px 20px;
+            box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+        }
+        
+        .bot-message {
+            margin-right: auto;
+        }
+        
+        .bot-bubble {
+            background: white;
+            color: #333;
+            padding: 15px 20px;
+            border-radius: 20px 20px 20px 5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e9ecef;
+        }
+        
+        .message-sender {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .message-time {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .chat-input-container {
+            padding: 25px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        
+        #messageInput {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            outline: none;
+            font-size: 16px;
+            resize: none;
+            height: 60px;
+            max-height: 120px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        
+        #messageInput:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        }
+        
+        #sendButton {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        #sendButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,123,255,0.4);
+        }
+        
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .quick-btn {
+            padding: 8px 16px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-btn:hover {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        
+        @media (max-width: 768px) {
+            .message {
+                max-width: 85%;
+            }
             
-            try {
-                // استخدام proxy عام
-                const proxyUrl = 'https://api.allorigins.win/raw?url=';
-                const targetUrl = encodeURIComponent('http://n8n.shorog.com/webhook-test/shorogai');
-                
-                const response = await fetch(proxyUrl + targetUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        message: message,
-                        test: true
-                    })
-                });
-                
-                const data = await response.text();
-                resultDiv.innerHTML = `<p>✅ تم الإرسال: ${data}</p>`;
-            } catch (error) {
-                resultDiv.innerHTML = `<p>❌ خطأ: ${error.message}</p>`;
+            body {
+                padding: 10px;
+            }
+            
+            .chat-container {
+                height: 95vh;
             }
         }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>🤖 مساعدك الذكي</h1>
+            <p>شات ذكي يعمل بكفاءة عالية - متصل بـ n8n</p>
+        </div>
+        
+        <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span id="statusText">جاري الاتصال...</span>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                <div class="bot-bubble">
+                    <div class="message-sender">🤖 المساعد الذكي</div>
+                    <div>🎉 أهلاً وسهلاً! أنا مساعدك الذكي الجديد.</div>
+                    <div style="margin-top: 10px;">💬 يمكنك محادثتي في أي موضوع وسأرد عليك فوراً.</div>
+                    <div class="message-time" id="currentTime"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-input-container">
+            <div class="input-group">
+                <textarea 
+                    id="messageInput" 
+                    placeholder="اكتب رسالتك هنا..." 
+                    rows="1"
+                ></textarea>
+                <button id="sendButton">
+                    <span>إرسال</span>
+                    <span>🚀</span>
+                </button>
+            </div>
+            
+            <div class="quick-actions">
+                <button class="quick-btn" onclick="quickMessage('مرحبا! كيف حالك؟')">👋 مقدمة</button>
+                <button class="quick-btn" onclick="quickMessage('أحتاج مساعدة في...')">❓ مساعدة</button>
+                <button class="quick-btn" onclick="quickMessage('أخبرني عن نفسك')">🤖 من أنت</button>
+                <button class="quick-btn" onclick="quickMessage('شكراً لك')">🙏 شكر</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ShorogChat {
+            constructor() {
+                // الرابط الصحيح مع تعديل الـ IP
+                this.n8nUrl = 'http://107.150.1.238:5678/webhook-test/25c6a6c6-7aca-44eb-89a3-06a32942b356';
+                this.init();
+            }
+
+            init() {
+                this.chatMessages = document.getElementById('chatMessages');
+                this.messageInput = document.getElementById('messageInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.statusText = document.getElementById('statusText');
+                this.messageCount = 0;
+                
+                this.setupEventListeners();
+                this.testConnection();
+                this.updateCurrentTime();
+                
+                setInterval(() => this.updateCurrentTime(), 60000);
+            }
+            
+            setupEventListeners() {
+                this.sendButton.addEventListener('click', () => this.handleSendMessage());
+                
+                this.messageInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.handleSendMessage();
+                    }
+                });
+                
+                this.messageInput.addEventListener('input', () => {
+                    this.messageInput.style.height = 'auto';
+                    this.messageInput.style.height = Math.min(this.messageInput.scrollHeight, 120) + 'px';
+                });
+                
+                setTimeout(() => this.messageInput.focus(), 500);
+            }
+            
+            updateCurrentTime() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('ar-SA', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                document.getElementById('currentTime').textContent = timeString;
+            }
+            
+            addMessage(text, isUser = false) {
+                this.messageCount++;
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+                
+                const sender = isUser ? 'أنت' : '🤖 المساعد الذكي';
+                const bubbleClass = isUser ? 'user-bubble' : 'bot-bubble';
+                const time = new Date().toLocaleTimeString('ar-SA', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                messageDiv.innerHTML = `
+                    <div class="${bubbleClass}">
+                        <div class="message-sender">${sender}</div>
+                        <div>${text}</div>
+                        <div class="message-time">${time}</div>
+                    </div>
+                `;
+                
+                this.chatMessages.appendChild(messageDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+            
+            async testConnection() {
+                this.statusText.textContent = '🔄 جاري اختبار الاتصال...';
+                
+                try {
+                    const response = await fetch(this.n8nUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            message: 'اختبار اتصال',
+                            user: 'system_test'
+                        })
+                    });
+
+                    if (response.ok) {
+                        this.statusText.textContent = '✅ متصل بنجاح';
+                        this.addMessage('✅ الاتصال يعمل بنجاح! يمكنك البدء بالمحادثة الآن.');
+                    } else {
+                        throw new Error(`خطأ: ${response.status}`);
+                    }
+                } catch (error) {
+                    this.statusText.textContent = '❌ فشل الاتصال';
+                    this.addMessage('❌ لا يمكن الاتصال بالخادم. تأكد من تشغيل n8n.');
+                    console.error('Connection test failed:', error);
+                }
+            }
+            
+            async handleSendMessage() {
+                const message = this.messageInput.value.trim();
+                if (!message) return;
+
+                this.addMessage(message, true);
+                this.messageInput.value = '';
+                this.messageInput.style.height = 'auto';
+                this.sendButton.disabled = true;
+
+                try {
+                    const response = await fetch(this.n8nUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            message: message,
+                            user: 'shorog_user',
+                            timestamp: new Date().toISOString()
+                        })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        const reply = data.reply || data.message || 'شكراً على رسالتك!';
+                        this.addMessage(reply, false);
+                    } else {
+                        throw new Error(`خطأ من الخادم: ${response.status}`);
+                    }
+                } catch (error) {
+                    this.addMessage('❌ عذراً، حدث خطأ في الاتصال. حاول مرة أخرى.', false);
+                    console.error('Send message error:', error);
+                } finally {
+                    this.sendButton.disabled = false;
+                    this.messageInput.focus();
+                }
+            }
+        }
+        
+        // دالة للرسائل السريعة
+        function quickMessage(message) {
+            const chat = window.chatApp;
+            chat.messageInput.value = message;
+            chat.handleSendMessage();
+        }
+        
+        // بدء التطبيق
+        document.addEventListener('DOMContentLoaded', () => {
+            window.chatApp = new ShorogChat();
+        });
     </script>
 </body>
 </html>
