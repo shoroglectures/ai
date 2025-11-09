@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* نفس الـ CSS السابق - احتفظ به */
         * {
             margin: 0;
             padding: 0;
@@ -36,7 +37,6 @@
             direction: rtl;
         }
 
-        /* الشريط العلوي */
         .navbar {
             background: var(--white);
             box-shadow: var(--shadow);
@@ -70,7 +70,6 @@
             gap: 1rem;
         }
 
-        /* زر المستخدم والقائمة المنسدلة */
         .user-dropdown {
             position: relative;
         }
@@ -135,12 +134,6 @@
             color: var(--primary-color);
         }
 
-        .dropdown-item i {
-            width: 16px;
-            text-align: center;
-        }
-
-        /* زر القائمة للجوال */
         .menu-btn {
             display: none;
             background: none;
@@ -161,7 +154,6 @@
             color: var(--primary-color);
         }
 
-        /* المحتوى الرئيسي */
         .main-content {
             min-height: 100vh;
             display: flex;
@@ -184,7 +176,6 @@
             line-height: 1.2;
         }
 
-        /* زر الإضافة */
         .add-btn {
             width: 80px;
             height: 80px;
@@ -207,88 +198,6 @@
             box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4);
         }
 
-        .add-btn:active {
-            transform: translateY(-2px) scale(1.02);
-        }
-
-        /* القائمة الجانبية للجوال */
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 280px;
-            height: 100vh;
-            background: var(--white);
-            box-shadow: var(--shadow-lg);
-            transition: var(--transition);
-            z-index: 2000;
-            padding: 1rem;
-        }
-
-        .mobile-menu.show {
-            right: 0;
-        }
-
-        .mobile-menu-header {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 2rem;
-        }
-
-        .close-menu {
-            background: none;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .close-menu:hover {
-            background: var(--primary-light);
-            color: var(--primary-color);
-        }
-
-        .mobile-menu-items {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .mobile-menu-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            color: var(--text-dark);
-            text-decoration: none;
-            border-radius: 8px;
-            transition: var(--transition);
-            font-weight: 500;
-        }
-
-        .mobile-menu-item:hover {
-            background: var(--primary-light);
-            color: var(--primary-color);
-        }
-
-        .mobile-menu-item i {
-            width: 20px;
-            text-align: center;
-        }
-
-        .mobile-menu-divider {
-            height: 1px;
-            background: var(--border-color);
-            margin: 1rem 0;
-        }
-
-        /* نافذة المحادثة */
         .chat-modal {
             position: fixed;
             top: 0;
@@ -322,7 +231,7 @@
             padding: 1.5rem;
             border-bottom: 1px solid var(--border-color);
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: center;
         }
 
@@ -393,6 +302,7 @@
             border-radius: var(--radius);
             background: var(--primary-light);
             color: var(--text-dark);
+            line-height: 1.5;
         }
 
         .user .message-content {
@@ -469,6 +379,77 @@
         .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
         .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
 
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: var(--white);
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            z-index: 2000;
+            padding: 1rem;
+        }
+
+        .mobile-menu.show {
+            right: 0;
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 2rem;
+        }
+
+        .close-menu {
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-menu:hover {
+            background: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .mobile-menu-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .mobile-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .mobile-menu-item:hover {
+            background: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .mobile-menu-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 1rem 0;
+        }
+
         @keyframes typing {
             0%, 80%, 100% { transform: scale(0); }
             40% { transform: scale(1); }
@@ -479,7 +460,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* التصميم المتجاوب */
         @media (max-width: 768px) {
             .nav-logo h1 {
                 font-size: 1.1rem;
@@ -536,7 +516,6 @@
     </style>
 </head>
 <body>
-    <!-- الشريط العلوي -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
@@ -567,7 +546,6 @@
         </div>
     </nav>
 
-    <!-- المحتوى الرئيسي -->
     <main class="main-content">
         <div class="hero-section">
             <h2 class="main-title">كيف يمكنني المساعدة؟</h2>
@@ -577,17 +555,23 @@
         </div>
     </main>
 
-    <!-- نافذة المحادثة -->
     <div class="chat-modal" id="chatModal">
         <div class="chat-container">
             <div class="chat-header">
-                <h3>محادثة جديدة</h3>
+                <h3>محادثة مع اشراقة</h3>
                 <button class="close-chat" id="closeChat">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="chat-messages" id="chatMessages">
-                <!-- الرسائل تظهر هنا -->
+                <div class="message ai">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        مرحباً! أنا اشراقة، مدربة الذكاء الاصطناعي. كيف يمكنني مساعدتك اليوم؟
+                    </div>
+                </div>
             </div>
             <div class="chat-input">
                 <div class="input-group">
@@ -605,7 +589,6 @@
         </div>
     </div>
 
-    <!-- القائمة الجانبية للجوال -->
     <div class="mobile-menu" id="mobileMenu">
         <div class="mobile-menu-header">
             <button class="close-menu" id="closeMenu">
@@ -653,13 +636,9 @@
                 this.sendButton = document.getElementById('sendButton');
                 
                 // إعدادات الويب هوك
-                this.WEBHOOK_URLS = {
-                    test: 'https://n8n.shorog.com/webhook-test/shorogai',
-                    production: 'https://n8n.shorog.com/webhook/shorogai'
-                };
-                
-                this.currentWebhook = 'test';
+                this.WEBHOOK_URL = 'https://n8n.shorog.com/webhook/shorogai';
                 this.isLoading = false;
+                this.conversationId = this.generateId();
                 
                 this.init();
             }
@@ -667,17 +646,15 @@
             init() {
                 this.setupEventListeners();
                 this.setupClickOutside();
-                this.loadWebhookPreference();
+                this.autoResizeTextarea();
             }
             
             setupEventListeners() {
-                // تحكم في القائمة المنسدلة للمستخدم
                 this.userBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     this.toggleDropdown();
                 });
                 
-                // تحكم في القائمة الجانبية للجوال
                 this.menuBtn.addEventListener('click', () => {
                     this.openMobileMenu();
                 });
@@ -686,17 +663,14 @@
                     this.closeMobileMenu();
                 });
                 
-                // زر بدء المحادثة
                 this.addBtn.addEventListener('click', () => {
                     this.startNewChat();
                 });
                 
-                // إغلاق نافذة المحادثة
                 this.closeChat.addEventListener('click', () => {
                     this.closeChatModal();
                 });
                 
-                // إرسال رسالة
                 this.sendButton.addEventListener('click', () => {
                     this.sendMessage();
                 });
@@ -708,7 +682,6 @@
                     }
                 });
                 
-                // إغلاق القوائم عند النقر خارجها
                 document.addEventListener('click', () => {
                     this.closeAllMenus();
                 });
@@ -721,6 +694,13 @@
                 
                 this.mobileMenu.addEventListener('click', (e) => {
                     e.stopPropagation();
+                });
+            }
+            
+            autoResizeTextarea() {
+                this.messageInput.addEventListener('input', () => {
+                    this.messageInput.style.height = 'auto';
+                    this.messageInput.style.height = Math.min(this.messageInput.scrollHeight, 120) + 'px';
                 });
             }
             
@@ -744,8 +724,17 @@
             }
             
             startNewChat() {
-                this.chatMessages.innerHTML = '';
-                this.addMessage('مرحباً! أنا اشراقة، مدربة الذكاء الاصطناعي. كيف يمكنني مساعدتك اليوم؟', 'ai');
+                this.conversationId = this.generateId();
+                this.chatMessages.innerHTML = `
+                    <div class="message ai">
+                        <div class="message-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            مرحباً! أنا اشراقة، مدربة الذكاء الاصطناعي. كيف يمكنني مساعدتك اليوم؟
+                        </div>
+                    </div>
+                `;
                 this.chatModal.classList.add('show');
                 this.messageInput.focus();
             }
@@ -758,17 +747,15 @@
                 const message = this.messageInput.value.trim();
                 if (!message || this.isLoading) return;
                 
-                // إضافة رسالة المستخدم
                 this.addMessage(message, 'user');
                 this.messageInput.value = '';
+                this.messageInput.style.height = 'auto';
                 this.sendButton.disabled = true;
                 this.isLoading = true;
                 
-                // إظهار مؤشر الكتابة
                 this.showTypingIndicator();
                 
                 try {
-                    // إرسال إلى n8n
                     const response = await this.sendToWebhook(message);
                     this.removeTypingIndicator();
                     this.addMessage(response, 'ai');
@@ -787,24 +774,129 @@
                 const payload = {
                     message: message,
                     timestamp: new Date().toISOString(),
+                    conversationId: this.conversationId,
                     type: 'chat_message',
                     source: 'eshraqa_ai_trainer'
                 };
                 
-                const response = await fetch(this.WEBHOOK_URLS[this.currentWebhook], {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                });
+                try {
+                    const response = await fetch(this.WEBHOOK_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // 🔥 **الكود الجديد - استخراج ذكي للرد**
+                    console.log('🔍 استجابة n8n الكاملة:', data);
+                    
+                    // الطريقة الأفضل: ابحث في كل المستويات
+                    const aiResponse = this.extractAIResponse(data);
+                    console.log('✅ الرد المستخرج:', aiResponse);
+                    
+                    return aiResponse;
+                    
+                } catch (error) {
+                    console.error('❌ خطأ في الاتصال:', error);
+                    throw error;
+                }
+            }
+            
+            // 🔥 **دالة جديدة لاستخراج الرد من أي مكان في الاستجابة**
+            extractAIResponse(obj) {
+                if (!obj) return 'عذراً، لم أستطع فهم الرد.';
                 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                // إذا كان النص مباشرة
+                if (typeof obj === 'string') {
+                    return this.cleanResponse(obj);
                 }
                 
-                const data = await response.json();
-                return data.response || data.message || 'شكراً على رسالتك! كيف يمكنني مساعدتك أكثر؟';
+                // ابحث في الخصائص الشائعة
+                const commonKeys = [
+                    'response', 'aiResponse', 'answer', 'message', 
+                    'output', 'text', 'content', 'reply', 'chat',
+                    'choices', 'result'
+                ];
+                
+                for (const key of commonKeys) {
+                    if (obj[key] && typeof obj[key] === 'string') {
+                        console.log(`📌 وجد الرد في المفتاح: ${key}`);
+                        return this.cleanResponse(obj[key]);
+                    }
+                }
+                
+                // ابحث في الـ nodes المختلفة (لـ n8n)
+                if (obj['AI Agent']) {
+                    console.log('📌 وجد node AI Agent');
+                    return this.extractFromAIAgent(obj['AI Agent']);
+                }
+                
+                if (obj['DeepSeek AI']) {
+                    console.log('📌 وجد node DeepSeek AI');
+                    return this.extractFromAIAgent(obj['DeepSeek AI']);
+                }
+                
+                if (obj['Chat AI']) {
+                    console.log('📌 وجد node Chat AI');
+                    return this.extractFromAIAgent(obj['Chat AI']);
+                }
+                
+                // ابحث بشكل متكرر في الكائن
+                for (const key in obj) {
+                    if (obj.hasOwnProperty(key) && typeof obj[key] === 'object') {
+                        const result = this.extractAIResponse(obj[key]);
+                        if (result && result !== 'عذراً، لم أستطع فهم الرد.') {
+                            return result;
+                        }
+                    }
+                }
+                
+                // إذا لم نجد شيئاً، ارجع رسالة افتراضية
+                return 'شكراً على رسالتك! تم استلامها بنجاح.';
+            }
+            
+            // 🔥 **دالة مساعدة لاستخراج من AI Agent**
+            extractFromAIAgent(aiAgentData) {
+                if (!aiAgentData) return 'عذراً، لم أستطع فهم الرد.';
+                
+                const keys = ['response', 'answer', 'message', 'output', 'text', 'content'];
+                
+                for (const key of keys) {
+                    if (aiAgentData[key] && typeof aiAgentData[key] === 'string') {
+                        console.log(`📌 وجد الرد في AI Agent.${key}`);
+                        return this.cleanResponse(aiAgentData[key]);
+                    }
+                }
+                
+                // إذا كان AI Agent يحتوي على choices (OpenAI format)
+                if (aiAgentData.choices && Array.isArray(aiAgentData.choices)) {
+                    const firstChoice = aiAgentData.choices[0];
+                    if (firstChoice && firstChoice.message && firstChoice.message.content) {
+                        return this.cleanResponse(firstChoice.message.content);
+                    }
+                }
+                
+                return this.extractAIResponse(aiAgentData);
+            }
+            
+            // 🔥 **دالة تنظيف الرد**
+            cleanResponse(response) {
+                if (typeof response !== 'string') return response;
+                
+                // تنظيف الرد من \n وغيرها
+                return response
+                    .replace(/\\n/g, '\n')
+                    .replace(/\\"/g, '"')
+                    .replace(/\\'/g, "'")
+                    .trim();
             }
             
             addMessage(content, sender) {
@@ -861,51 +953,11 @@
                 this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
             }
             
-            loadWebhookPreference() {
-                const saved = localStorage.getItem('webhookPreference');
-                if (saved) {
-                    this.currentWebhook = saved;
-                }
-            }
-            
-            saveWebhookPreference() {
-                localStorage.setItem('webhookPreference', this.currentWebhook);
-            }
-            
-            switchWebhook(mode) {
-                if (this.WEBHOOK_URLS[mode]) {
-                    this.currentWebhook = mode;
-                    this.saveWebhookPreference();
-                    this.showNotification(`تم التبديل إلى وضع ${mode === 'test' ? 'الاختبار' : 'الإنتاج'}`);
-                }
-            }
-            
-            showNotification(message) {
-                const notification = document.createElement('div');
-                notification.style.cssText = `
-                    position: fixed;
-                    top: 100px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    background: var(--primary-color);
-                    color: white;
-                    padding: 1rem 2rem;
-                    border-radius: var(--radius);
-                    box-shadow: var(--shadow-lg);
-                    z-index: 3000;
-                    font-weight: 500;
-                `;
-                
-                notification.textContent = message;
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 3000);
+            generateId() {
+                return 'conv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             }
         }
 
-        // تهيئة التطبيق عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', () => {
             new AITrainerApp();
         });
