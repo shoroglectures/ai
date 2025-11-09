@@ -3,224 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شات الذكاء الاصطناعي</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        .chat-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            overflow: hidden;
-        }
-        .chat-header {
-            background: #007bff;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        .chat-messages {
-            height: 400px;
-            overflow-y: auto;
-            padding: 20px;
-            background: #f8f9fa;
-        }
-        .message {
-            margin-bottom: 15px;
-            padding: 12px 15px;
-            border-radius: 15px;
-            max-width: 70%;
-        }
-        .user-message {
-            background: #007bff;
-            color: white;
-            margin-left: auto;
-        }
-        .bot-message {
-            background: white;
-            color: #333;
-            margin-right: auto;
-            border: 1px solid #e9ecef;
-        }
-        .chat-input {
-            display: flex;
-            padding: 20px;
-            background: white;
-            gap: 10px;
-        }
-        #messageInput {
-            flex: 1;
-            padding: 12px 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 25px;
-            font-size: 16px;
-        }
-        #sendButton {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-    </style>
+    <title>مدربة الذكاء الاصطناعي اشراقة</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <h1>🤖 شات الذكاء الاصطناعي</h1>
-            <p>إصدار يعمل مع HTTPS</p>
-        </div>
+    <!-- الشريط العلوي -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- الشعار -->
+            <div class="nav-logo">
+                <h1>مدربة الذكاء الاصطناعي اشراقة</h1>
+            </div>
 
-        <div class="chat-messages" id="chatMessages">
-            <div class="message bot-message">
-                🔄 جاري التحضير...
+            <!-- القائمة والأيقونات -->
+            <div class="nav-actions">
+                <!-- أيقونة المستخدم -->
+                <div class="user-dropdown">
+                    <button class="user-btn" id="userBtn">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            تسجيل الدخول
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-user-plus"></i>
+                            إنشاء حساب
+                        </a>
+                    </div>
+                </div>
+
+                <!-- أيقونة القائمة (للجوال) -->
+                <button class="menu-btn" id="menuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
         </div>
-        
-        <div class="chat-input">
-            <input type="text" id="messageInput" placeholder="اكتب رسالتك هنا..." />
-            <button id="sendButton">إرسال</button>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <div class="hero-section">
+            <h2 class="main-title">كيف يمكنني المساعدة؟</h2>
+            <button class="add-btn" id="addBtn">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </main>
+
+    <!-- القائمة الجانبية للجوال -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <button class="close-menu" id="closeMenu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-menu-items">
+            <a href="#" class="mobile-menu-item">
+                <i class="fas fa-home"></i>
+                الرئيسية
+            </a>
+            <a href="#" class="mobile-menu-item">
+                <i class="fas fa-comments"></i>
+                المحادثات
+            </a>
+            <a href="#" class="mobile-menu-item">
+                <i class="fas fa-cog"></i>
+                الإعدادات
+            </a>
+            <div class="mobile-menu-divider"></div>
+            <a href="#" class="mobile-menu-item">
+                <i class="fas fa-sign-in-alt"></i>
+                تسجيل الدخول
+            </a>
+            <a href="#" class="mobile-menu-item">
+                <i class="fas fa-user-plus"></i>
+                إنشاء حساب
+            </a>
         </div>
     </div>
 
-    <script>
-        class HTTPSChat {
-            constructor() {
-                this.proxyOptions = [
-                    // الحل 1: CORS Anywhere (HTTPS)
-                    'https://cors-anywhere.herokuapp.com/http://107.150.1.238:5678/webhook-test/shorogai',
-                    
-                    // الحل 2: All Origins (HTTPS)
-                    'https://api.allorigins.win/raw?url=' + encodeURIComponent('http://107.150.1.238:5678/webhook-test/shorogai'),
-                    
-                    // الحل 3: CORS Proxy (HTTPS)
-                    'https://corsproxy.io/?' + encodeURIComponent('http://107.150.1.238:5678/webhook-test/shorogai'),
-                    
-                    // الحل 4: محاولة مباشرة (للتجربة)
-                    'https://n8n.shorog.com/webhook-test/shorogai'
-                ];
-                
-                this.init();
-            }
-
-            init() {
-                this.chatMessages = document.getElementById('chatMessages');
-                this.messageInput = document.getElementById('messageInput');
-                this.sendButton = document.getElementById('sendButton');
-                this.workingUrl = null;
-                
-                this.setupEventListeners();
-                this.testProxies();
-            }
-
-            setupEventListeners() {
-                this.sendButton.addEventListener('click', () => this.sendMessage());
-                this.messageInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') this.sendMessage();
-                });
-            }
-
-            addMessage(text, isUser = false) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-                messageDiv.textContent = text;
-                this.chatMessages.appendChild(messageDiv);
-                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
-            }
-
-            async testProxies() {
-                this.addMessage('🔍 جاري اختبار خوادم البروكسي...', false);
-                
-                for (let i = 0; i < this.proxyOptions.length; i++) {
-                    const url = this.proxyOptions[i];
-                    const proxyName = ['CORS Anywhere', 'All Origins', 'CORS Proxy', 'مباشر'][i];
-                    
-                    try {
-                        this.addMessage(`جرب ${proxyName}...`, false);
-                        
-                        const response = await fetch(url, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                message: 'اختبار اتصال',
-                                user: 'test'
-                            })
-                        });
-
-                        if (response.ok) {
-                            const data = await response.json();
-                            this.addMessage(`✅ ${proxyName} يعمل!`, false);
-                            this.workingUrl = url;
-                            break;
-                        }
-                    } catch (error) {
-                        this.addMessage(`❌ ${proxyName} فشل`, false);
-                    }
-                }
-
-                if (this.workingUrl) {
-                    this.addMessage('🎉 تم الاتصال بنجاح! ابدأ المحادثة.', false);
-                } else {
-                    this.addMessage('❌ جميع الخوادم فشلت. جرب تحديث الصفحة.', false);
-                }
-            }
-
-            async sendMessage() {
-                if (!this.workingUrl) {
-                    this.addMessage('⚠️ لا يوجد اتصال نشط.', false);
-                    return;
-                }
-
-                const message = this.messageInput.value.trim();
-                if (!message) return;
-
-                this.addMessage(message, true);
-                this.messageInput.value = '';
-                this.sendButton.disabled = true;
-
-                try {
-                    const response = await fetch(this.workingUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            message: message,
-                            user: 'web_user',
-                            timestamp: new Date().toISOString()
-                        })
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        const reply = data.reply || data.message || 'تم الاستلام بنجاح!';
-                        this.addMessage(reply, false);
-                    } else {
-                        throw new Error(`خطأ ${response.status}`);
-                    }
-                } catch (error) {
-                    this.addMessage('❌ فشل الإرسال: ' + error.message, false);
-                    console.error('Error:', error);
-                } finally {
-                    this.sendButton.disabled = false;
-                }
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            new HTTPSChat();
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
