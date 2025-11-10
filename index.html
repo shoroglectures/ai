@@ -3,64 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدربة الذكاء الاصطناعي اشراقة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>مدربة الذكاء الاصطناعي اشراقة - المدربة شروق الحربي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 🔥 إضافة مكتبة MathJax للمعادلات الرياضية -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                renderActions: {
+                    addMenu: [0, '', '']
+                }
+            },
+            startup: {
+                pageReady: function() {
+                    return MathJax.startup.defaultPageReady().then(function() {
+                        console.log('MathJax is ready');
+                    });
+                }
+            }
+        };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js" async></script>
+    
     <style>
-        /* نفس الـ CSS السابق - احتفظ به */
+        :root {
+            --teal-green: #1a7f75;
+            --dark-teal: #14665f;
+            --light-teal: #2aa79b;
+            --accent-teal: #34c6b8;
+            --light-accent: #e8f6f4;
+            --dark-grey: #2d3748;
+            --dark-footer: #1a202c;
+            --light-grey: #f7fafc;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            --primary-color: #3b82f6;
-            --primary-dark: #2563eb;
-            --primary-light: #dbeafe;
-            --bg-color: #f8fafc;
-            --white: #ffffff;
-            --text-dark: #1e293b;
-            --text-light: #64748b;
-            --border-color: #e2e8f0;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --radius: 12px;
-            --transition: all 0.3s ease;
+        html {
+            height: 100%;
         }
 
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-dark);
-            line-height: 1.6;
+            background: linear-gradient(rgba(26, 127, 117, 0.85), rgba(20, 102, 95, 0.9)), 
+                        url('https://images.hogeschoolrotterdam.nl/Blob/69a72d7dc37f4eea934e068ee09df000/05bd68a2c7fd40729551cd59479647fc.jpg?mode=crop&quality=90&format=jpg&width=1869&height=539');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: var(--white);
+            line-height: 1.7;
             direction: rtl;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
+        /* الشريط العلوي المحسن */
         .navbar {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             box-shadow: var(--shadow);
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
-            padding: 0 1rem;
+            padding: 0 1.5rem;
+            border-bottom: 2px solid var(--teal-green);
+            height: 65px;
         }
 
         .nav-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
+            padding: 0.5rem 0;
+            height: 100%;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-brain-icon {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--teal-green), var(--light-teal));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            animation: pulse 2s infinite;
+            box-shadow: 0 4px 15px rgba(26, 127, 117, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-brain-icon::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            background: conic-gradient(from 0deg, transparent, var(--accent-teal), transparent);
+            animation: rotate 3s linear infinite;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .ai-brain-icon::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: linear-gradient(135deg, var(--teal-green), var(--light-teal));
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .ai-brain-icon i {
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .nav-logo h1 {
-            font-size: 1.25rem;
+            font-size: 0.9rem;
             font-weight: 700;
-            color: var(--primary-color);
+            color: var(--teal-green);
             margin: 0;
         }
 
@@ -70,29 +180,45 @@
             gap: 1rem;
         }
 
+        /* نسخة تجريبية */
+        .beta-badge {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            animation: glow 2s ease-in-out infinite alternate;
+            box-shadow: 0 2px 10px rgba(255, 107, 107, 0.4);
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 2px 10px rgba(255, 107, 107, 0.4); }
+            to { box-shadow: 0 2px 20px rgba(255, 107, 107, 0.6); }
+        }
+
         .user-dropdown {
             position: relative;
         }
 
         .user-btn {
-            background: none;
+            background: var(--teal-green);
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-light);
+            color: white;
             cursor: pointer;
             transition: var(--transition);
-            background: var(--primary-light);
+            box-shadow: var(--shadow);
         }
 
         .user-btn:hover {
-            background: var(--primary-color);
-            color: var(--white);
-            transform: translateY(-2px);
+            background: var(--dark-teal);
+            transform: translateY(-2px) scale(1.05);
         }
 
         .dropdown-menu {
@@ -102,19 +228,20 @@
             background: var(--white);
             border-radius: var(--radius);
             box-shadow: var(--shadow-lg);
-            padding: 0.5rem;
+            padding: 0.75rem;
             min-width: 180px;
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
             transition: var(--transition);
             z-index: 1001;
+            border: 1px solid var(--light-accent);
         }
 
         .dropdown-menu.show {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
+            transform: translateY(5px);
         }
 
         .dropdown-item {
@@ -122,89 +249,148 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.75rem 1rem;
-            color: var(--text-dark);
+            color: var(--dark-grey);
             text-decoration: none;
             border-radius: 8px;
             transition: var(--transition);
             font-weight: 500;
+            font-size: 0.85rem;
         }
 
         .dropdown-item:hover {
-            background: var(--primary-light);
-            color: var(--primary-color);
+            background: var(--teal-green);
+            color: white;
+            transform: translateX(-5px);
         }
 
         .menu-btn {
             display: none;
-            background: none;
+            background: var(--teal-green);
             border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-light);
+            color: white;
             cursor: pointer;
             transition: var(--transition);
         }
 
         .menu-btn:hover {
-            background: var(--primary-light);
-            color: var(--primary-color);
+            background: var(--dark-teal);
+            transform: rotate(90deg);
         }
 
+        /* المحتوى الرئيسي المحسن */
         .main-content {
-            min-height: 100vh;
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 2rem;
-            margin-top: 80px;
+            margin-top: 65px;
+            min-height: calc(100vh - 180px);
+            text-align: center;
         }
 
         .hero-section {
-            text-align: center;
-            max-width: 600px;
+            max-width: 800px;
+            padding: 1.5rem;
         }
 
         .main-title {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 3rem;
-            line-height: 1.2;
+            font-size: 1.68rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            line-height: 1.3;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .title-line {
+            display: block;
+            margin-bottom: 0.8rem;
+        }
+
+        .title-bold {
+            font-weight: 800;
+            color: var(--white);
+        }
+
+        .title-sub {
+            font-size: 1.68rem;
+            font-weight: 600;
+            color: var(--light-accent);
+            margin-top: 1.5rem;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
         }
 
         .add-btn {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            background: var(--primary-color);
+            background: linear-gradient(135deg, var(--teal-green), var(--light-teal));
             border: none;
-            color: var(--white);
-            font-size: 2rem;
+            color: white;
+            font-size: 1.8rem;
             cursor: pointer;
             transition: var(--transition);
             box-shadow: var(--shadow-lg);
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 2rem auto 0;
+            position: relative;
+            overflow: hidden;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .add-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateX(-100%);
+        }
+
+        .add-btn:hover::before {
+            animation: shine 1.5s;
         }
 
         .add-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4);
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 20px 40px rgba(26, 127, 117, 0.5);
+            animation: none;
         }
 
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes shine {
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 4px 15px rgba(26, 127, 117, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 6px 20px rgba(26, 127, 117, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 4px 15px rgba(26, 127, 117, 0.4); }
+        }
+
+        /* نافذة المحادثة المحسنة */
         .chat-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
             display: none;
             justify-content: center;
             align-items: center;
@@ -214,45 +400,91 @@
 
         .chat-modal.show {
             display: flex;
+            animation: fadeIn 0.3s ease;
         }
 
         .chat-container {
             background: var(--white);
-            border-radius: var(--radius);
+            border-radius: 20px;
             width: 100%;
             max-width: 800px;
             height: 80vh;
             display: flex;
             flex-direction: column;
             box-shadow: var(--shadow-lg);
+            border: 2px solid var(--teal-green);
+            overflow: hidden;
         }
 
         .chat-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
+            padding: 1.2rem 1.5rem;
+            background: linear-gradient(135deg, var(--teal-green), var(--light-teal));
+            color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: var(--shadow);
         }
 
         .chat-header h3 {
-            color: var(--text-dark);
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .ai-header-icon {
+            width: 35px;
+            height: 35px;
+            position: relative;
+        }
+
+        .chat-ai-icon {
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            animation: pulse 2s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-ai-icon::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.5), transparent);
+            animation: rotate 3s linear infinite;
+            border-radius: 50%;
+        }
+
+        .chat-ai-icon i {
+            position: relative;
+            z-index: 1;
         }
 
         .close-chat {
-            background: none;
+            background: rgba(255, 255, 255, 0.2);
             border: none;
-            color: var(--text-light);
+            color: white;
             cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 6px;
+            padding: 0.6rem;
+            border-radius: 10px;
             transition: var(--transition);
         }
 
         .close-chat:hover {
-            background: var(--primary-light);
-            color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
         }
 
         .chat-messages {
@@ -261,14 +493,26 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.2rem;
+            background: var(--light-grey);
         }
 
         .message {
             display: flex;
-            gap: 0.75rem;
+            gap: 0.8rem;
             max-width: 80%;
-            animation: fadeIn 0.3s ease;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .message.user {
@@ -277,101 +521,234 @@
         }
 
         .message-avatar {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1rem;
             flex-shrink: 0;
+            box-shadow: var(--shadow);
+            border: 2px solid white;
         }
 
         .user .message-avatar {
-            background: var(--primary-color);
+            background: linear-gradient(135deg, var(--teal-green), var(--light-teal));
             color: white;
         }
 
         .ai .message-avatar {
-            background: var(--border-color);
-            color: var(--text-light);
+            background: linear-gradient(135deg, var(--dark-teal), var(--teal-green));
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-avatar-icon {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ai .message-avatar::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: conic-gradient(from 0deg, var(--teal-green), var(--accent-teal), var(--teal-green));
+            border-radius: 50%;
+            animation: rotate 3s linear infinite;
+            z-index: 1;
         }
 
         .message-content {
             padding: 1rem;
-            border-radius: var(--radius);
-            background: var(--primary-light);
-            color: var(--text-dark);
-            line-height: 1.5;
+            border-radius: 18px;
+            line-height: 1.6;
+            box-shadow: var(--shadow);
+            position: relative;
+            max-width: 100%;
+            word-wrap: break-word;
+            font-size: 0.9rem;
         }
 
         .user .message-content {
-            background: var(--primary-color);
+            background: linear-gradient(135deg, var(--teal-green), var(--light-teal));
             color: white;
-            border-bottom-right-radius: 4px;
+            border-bottom-right-radius: 5px;
         }
 
         .ai .message-content {
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-bottom-left-radius: 4px;
+            background: var(--white);
+            border: 2px solid var(--light-accent);
+            border-bottom-left-radius: 5px;
+            color: var(--dark-grey);
+        }
+
+        /* 🔥 تحسينات MathJax */
+        .message-content mjx-container {
+            display: inline-block !important;
+            margin: 2px 0 !important;
+        }
+
+        .message-content .mjx-chtml {
+            font-size: 1.1em !important;
+        }
+
+        .math-box {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            direction: ltr;
+        }
+
+        .math-frac {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 3px;
+            vertical-align: middle;
+        }
+
+        .math-frac sup {
+            border-bottom: 1px solid #333;
+            padding: 0 5px;
+            font-size: 0.8em;
+        }
+
+        .math-frac sub {
+            padding: 0 5px;
+            font-size: 0.8em;
+        }
+
+        .math-hr {
+            border: none;
+            border-top: 2px solid var(--teal-green);
+            margin: 15px 0;
+        }
+
+        .message-content h2, 
+        .message-content h3 {
+            color: var(--teal-green);
+            margin: 10px 0 5px 0;
+        }
+
+        .message-content h2 { 
+            font-size: 1.1em; 
+            font-weight: 700;
+        }
+        
+        .message-content h3 { 
+            font-size: 1em; 
+            font-weight: 600;
+        }
+
+        .message-content strong {
+            font-weight: 700;
+            color: var(--teal-green);
+        }
+
+        .message-content em {
+            font-style: italic;
+        }
+
+        .message-content sup {
+            font-size: 0.7em;
+            vertical-align: super;
+        }
+
+        .message-content sub {
+            font-size: 0.7em;
+            vertical-align: sub;
+        }
+
+        .message-content ul {
+            margin: 5px 0 5px 20px;
+            list-style-type: disc;
+        }
+
+        .message-content li {
+            margin: 3px 0;
         }
 
         .chat-input {
-            padding: 1.5rem;
-            border-top: 1px solid var(--border-color);
+            padding: 1.2rem 1.5rem;
+            background: var(--white);
+            border-top: 2px solid var(--light-accent);
         }
 
         .input-group {
             display: flex;
-            gap: 0.75rem;
+            gap: 0.8rem;
+            align-items: flex-end;
         }
 
         .message-input {
             flex: 1;
             padding: 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
+            border: 2px solid var(--light-accent);
+            border-radius: 15px;
             font-family: inherit;
-            font-size: 1rem;
+            font-size: 0.9rem;
             resize: none;
             height: 60px;
+            transition: var(--transition);
+            background: var(--light-grey);
         }
 
         .message-input:focus {
             outline: none;
-            border-color: var(--primary-color);
+            border-color: var(--teal-green);
+            box-shadow: 0 0 0 3px rgba(26, 127, 117, 0.1);
+            background: var(--white);
         }
 
         .send-btn {
-            background: var(--primary-color);
+            background: linear-gradient(135deg, var(--teal-green), var(--light-teal));
             border: none;
             padding: 1rem 1.5rem;
-            border-radius: var(--radius);
+            border-radius: 15px;
             color: white;
             cursor: pointer;
             transition: var(--transition);
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            font-size: 0.9rem;
         }
 
         .send-btn:hover:not(:disabled) {
-            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26, 127, 117, 0.3);
         }
 
         .send-btn:disabled {
-            background: var(--text-light);
+            background: var(--dark-grey);
             cursor: not-allowed;
+            transform: none;
         }
 
         .typing-indicator {
             display: flex;
-            gap: 4px;
-            padding: 1rem;
+            gap: 6px;
+            padding: 1.2rem;
+            align-items: center;
         }
 
         .typing-indicator span {
             width: 8px;
             height: 8px;
-            background: var(--text-light);
+            background: var(--teal-green);
             border-radius: 50%;
             animation: typing 1.4s infinite ease-in-out;
         }
@@ -379,17 +756,30 @@
         .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
         .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
 
+        @keyframes typing {
+            0%, 80%, 100% { 
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% { 
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        /* القائمة الجانبية للجوال */
         .mobile-menu {
             position: fixed;
             top: 0;
             right: -100%;
-            width: 280px;
+            width: 300px;
             height: 100vh;
             background: var(--white);
             box-shadow: var(--shadow-lg);
             transition: var(--transition);
             z-index: 2000;
-            padding: 1rem;
+            padding: 1.5rem;
+            border-left: 3px solid var(--teal-green);
         }
 
         .mobile-menu.show {
@@ -398,131 +788,263 @@
 
         .mobile-menu-header {
             display: flex;
-            justify-content: flex-end;
-            margin-bottom: 2rem;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--light-accent);
+        }
+
+        .mobile-menu-title {
+            font-weight: 700;
+            color: var(--teal-green);
+            font-size: 1.1rem;
         }
 
         .close-menu {
-            background: none;
+            background: var(--teal-green);
             border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+            width: 35px;
+            height: 35px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-light);
+            color: white;
             cursor: pointer;
             transition: var(--transition);
         }
 
         .close-menu:hover {
-            background: var(--primary-light);
-            color: var(--primary-color);
+            background: var(--dark-teal);
+            transform: rotate(90deg);
         }
 
         .mobile-menu-items {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.6rem;
         }
 
         .mobile-menu-item {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
             padding: 1rem;
-            color: var(--text-dark);
+            color: var(--dark-grey);
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 12px;
             transition: var(--transition);
             font-weight: 500;
+            border: 1px solid transparent;
+            font-size: 0.85rem;
         }
 
         .mobile-menu-item:hover {
-            background: var(--primary-light);
-            color: var(--primary-color);
+            background: var(--teal-green);
+            color: white;
+            transform: translateX(-10px);
+            border-color: var(--teal-green);
+        }
+
+        .mobile-menu-item i {
+            width: 18px;
+            text-align: center;
+            font-size: 1rem;
         }
 
         .mobile-menu-divider {
-            height: 1px;
-            background: var(--border-color);
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--teal-green), transparent);
             margin: 1rem 0;
         }
 
-        @keyframes typing {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
+        /* التذييل المحسن */
+        .footer {
+            background: rgba(26, 32, 44, 0.95);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: auto;
+            backdrop-filter: blur(10px);
+            border-top: 2px solid var(--teal-green);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
+        .footer p {
+            color: white;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .footer-email {
+            color: var(--accent-teal);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .footer-email:hover {
+            color: var(--light-teal);
+            text-decoration: underline;
+        }
+
+        .ai-disclaimer {
+            font-size: 0.8rem;
+            color: #a0aec0;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        /* التصميم المتجاوب */
         @media (max-width: 768px) {
+            .navbar {
+                padding: 0 1rem;
+            }
+            
             .nav-logo h1 {
-                font-size: 1.1rem;
+                font-size: 0.8rem;
             }
-
+            
             .main-title {
-                font-size: 2.5rem;
+                font-size: 1.4rem;
             }
-
-            .add-btn {
-                width: 70px;
-                height: 70px;
-                font-size: 1.75rem;
+            
+            .title-sub {
+                font-size: 1.4rem;
             }
-
-            .menu-btn {
-                display: flex;
-            }
-
-            .message {
-                max-width: 90%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .nav-container {
-                padding: 0.75rem 0;
-            }
-
-            .nav-logo h1 {
-                font-size: 1rem;
-            }
-
-            .main-title {
-                font-size: 2rem;
-                margin-bottom: 2rem;
-            }
-
+            
             .add-btn {
                 width: 60px;
                 height: 60px;
                 font-size: 1.5rem;
             }
+            
+            .hero-section {
+                padding: 1rem;
+            }
+            
+            .menu-btn {
+                display: flex;
+            }
+            
+            .beta-badge {
+                font-size: 0.6rem;
+                padding: 0.2rem 0.6rem;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+            
+            .chat-container {
+                height: 85vh;
+            }
+            
+            .chat-header {
+                padding: 1rem 1.2rem;
+            }
+            
+            .chat-messages {
+                padding: 1.2rem;
+            }
+            
+            .footer {
+                padding: 1rem;
+            }
+        }
 
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0.4rem 0;
+            }
+            
+            .nav-logo h1 {
+                font-size: 0.7rem;
+            }
+            
+            .logo-icon {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .main-title {
+                font-size: 1.2rem;
+            }
+            
+            .title-sub {
+                font-size: 1.2rem;
+            }
+            
+            .add-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+            
             .main-content {
                 padding: 1rem;
-                margin-top: 70px;
+                margin-top: 60px;
+                min-height: calc(100vh - 160px);
             }
+            
+            .mobile-menu {
+                width: 260px;
+                padding: 1.2rem;
+            }
+            
+            .footer {
+                padding: 1rem;
+            }
+            
+            .footer p {
+                font-size: 0.8rem;
+            }
+        }
 
-            .chat-container {
-                height: 90vh;
+        /* تأثيرات إضافية */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* تحسين إمكانية الوصول */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
 </head>
 <body>
+    <!-- الشريط العلوي -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
+                <div class="logo-icon">
+                    <div class="ai-brain-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                </div>
                 <h1>مدربة الذكاء الاصطناعي اشراقة</h1>
             </div>
 
             <div class="nav-actions">
+                <!-- نسخة تجريبية -->
+                <div class="beta-badge">نسخة تجريبية</div>
+                
                 <div class="user-dropdown">
                     <button class="user-btn" id="userBtn">
                         <i class="fas fa-user"></i>
@@ -546,19 +1068,36 @@
         </div>
     </nav>
 
+    <!-- المحتوى الرئيسي -->
     <main class="main-content">
-        <div class="hero-section">
-            <h2 class="main-title">كيف يمكنني المساعدة؟</h2>
-            <button class="add-btn" id="addBtn">
+        <div class="hero-section fade-in">
+            <div class="main-title">
+                <span class="title-line">
+                    أنا <span class="title-bold">مدربة الذكاء الاصطناعي إشراقة</span>،
+                </span>
+                <span class="title-line">
+                    وأعمل كمساعدة <span class="title-bold">للمدربة شروق الحربي</span>
+                </span>
+                <div class="title-sub">كيف يمكنني المساعدة؟</div>
+            </div>
+            <button class="add-btn" id="addBtn" title="بدء محادثة جديدة">
                 <i class="fas fa-plus"></i>
             </button>
         </div>
     </main>
 
+    <!-- نافذة المحادثة -->
     <div class="chat-modal" id="chatModal">
         <div class="chat-container">
             <div class="chat-header">
-                <h3>محادثة مع اشراقة</h3>
+                <h3>
+                    <div class="ai-header-icon">
+                        <div class="chat-ai-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                    </div>
+                    محادثة مع اشراقة
+                </h3>
                 <button class="close-chat" id="closeChat">
                     <i class="fas fa-times"></i>
                 </button>
@@ -566,7 +1105,9 @@
             <div class="chat-messages" id="chatMessages">
                 <div class="message ai">
                     <div class="message-avatar">
-                        <i class="fas fa-robot"></i>
+                        <div class="ai-avatar-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
                     </div>
                     <div class="message-content">
                         مرحباً! أنا اشراقة، مدربة الذكاء الاصطناعي. كيف يمكنني مساعدتك اليوم؟
@@ -589,8 +1130,10 @@
         </div>
     </div>
 
+    <!-- القائمة الجانبية للجوال -->
     <div class="mobile-menu" id="mobileMenu">
         <div class="mobile-menu-header">
+            <div class="mobile-menu-title">القائمة</div>
             <button class="close-menu" id="closeMenu">
                 <i class="fas fa-times"></i>
             </button>
@@ -620,6 +1163,20 @@
         </div>
     </div>
 
+    <!-- التذييل -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 جميع الحقوق محفوظة - المدربة شروق الحربي</p>
+            <p>
+                <a href="mailto:shorog.a@tvtc.gov.sa" class="footer-email">
+                    shorog.a@tvtc.gov.sa
+                </a>
+            </p>
+            <p class="ai-disclaimer">This response is AI-generated, for reference only.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
     <script>
         class AITrainerApp {
             constructor() {
@@ -700,7 +1257,7 @@
             autoResizeTextarea() {
                 this.messageInput.addEventListener('input', () => {
                     this.messageInput.style.height = 'auto';
-                    this.messageInput.style.height = Math.min(this.messageInput.scrollHeight, 120) + 'px';
+                    this.messageInput.style.height = Math.min(this.messageInput.scrollHeight, 100) + 'px';
                 });
             }
             
@@ -728,7 +1285,9 @@
                 this.chatMessages.innerHTML = `
                     <div class="message ai">
                         <div class="message-avatar">
-                            <i class="fas fa-robot"></i>
+                            <div class="ai-avatar-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
                         </div>
                         <div class="message-content">
                             مرحباً! أنا اشراقة، مدربة الذكاء الاصطناعي. كيف يمكنني مساعدتك اليوم؟
@@ -795,10 +1354,9 @@
                     
                     const data = await response.json();
                     
-                    // 🔥 **الكود الجديد - استخراج ذكي للرد**
+                    // استخراج الرد من استجابة n8n
                     console.log('🔍 استجابة n8n الكاملة:', data);
                     
-                    // الطريقة الأفضل: ابحث في كل المستويات
                     const aiResponse = this.extractAIResponse(data);
                     console.log('✅ الرد المستخرج:', aiResponse);
                     
@@ -810,16 +1368,13 @@
                 }
             }
             
-            // 🔥 **دالة جديدة لاستخراج الرد من أي مكان في الاستجابة**
             extractAIResponse(obj) {
                 if (!obj) return 'عذراً، لم أستطع فهم الرد.';
                 
-                // إذا كان النص مباشرة
                 if (typeof obj === 'string') {
                     return this.cleanResponse(obj);
                 }
                 
-                // ابحث في الخصائص الشائعة
                 const commonKeys = [
                     'response', 'aiResponse', 'answer', 'message', 
                     'output', 'text', 'content', 'reply', 'chat',
@@ -833,7 +1388,6 @@
                     }
                 }
                 
-                // ابحث في الـ nodes المختلفة (لـ n8n)
                 if (obj['AI Agent']) {
                     console.log('📌 وجد node AI Agent');
                     return this.extractFromAIAgent(obj['AI Agent']);
@@ -844,12 +1398,6 @@
                     return this.extractFromAIAgent(obj['DeepSeek AI']);
                 }
                 
-                if (obj['Chat AI']) {
-                    console.log('📌 وجد node Chat AI');
-                    return this.extractFromAIAgent(obj['Chat AI']);
-                }
-                
-                // ابحث بشكل متكرر في الكائن
                 for (const key in obj) {
                     if (obj.hasOwnProperty(key) && typeof obj[key] === 'object') {
                         const result = this.extractAIResponse(obj[key]);
@@ -859,11 +1407,9 @@
                     }
                 }
                 
-                // إذا لم نجد شيئاً، ارجع رسالة افتراضية
                 return 'شكراً على رسالتك! تم استلامها بنجاح.';
             }
             
-            // 🔥 **دالة مساعدة لاستخراج من AI Agent**
             extractFromAIAgent(aiAgentData) {
                 if (!aiAgentData) return 'عذراً، لم أستطع فهم الرد.';
                 
@@ -876,7 +1422,6 @@
                     }
                 }
                 
-                // إذا كان AI Agent يحتوي على choices (OpenAI format)
                 if (aiAgentData.choices && Array.isArray(aiAgentData.choices)) {
                     const firstChoice = aiAgentData.choices[0];
                     if (firstChoice && firstChoice.message && firstChoice.message.content) {
@@ -887,11 +1432,9 @@
                 return this.extractAIResponse(aiAgentData);
             }
             
-            // 🔥 **دالة تنظيف الرد**
             cleanResponse(response) {
                 if (typeof response !== 'string') return response;
                 
-                // تنظيف الرد من \n وغيرها
                 return response
                     .replace(/\\n/g, '\n')
                     .replace(/\\"/g, '"')
@@ -899,25 +1442,66 @@
                     .trim();
             }
             
+            // 🔥 دالة جديدة لمعالجة المحتوى الرياضي
             addMessage(content, sender) {
                 const messageDiv = document.createElement('div');
                 messageDiv.className = `message ${sender}`;
                 
                 const avatar = document.createElement('div');
                 avatar.className = 'message-avatar';
-                avatar.innerHTML = sender === 'user' ? 
-                    '<i class="fas fa-user"></i>' : 
-                    '<i class="fas fa-robot"></i>';
+                
+                if (sender === 'user') {
+                    avatar.innerHTML = '<i class="fas fa-user"></i>';
+                } else {
+                    avatar.innerHTML = `
+                        <div class="ai-avatar-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                    `;
+                }
                 
                 const messageContent = document.createElement('div');
                 messageContent.className = 'message-content';
-                messageContent.textContent = content;
+                
+                // معالجة المحتوى الرياضي
+                const processedContent = this.formatMathContent(content);
+                messageContent.innerHTML = processedContent;
                 
                 messageDiv.appendChild(avatar);
                 messageDiv.appendChild(messageContent);
                 
                 this.chatMessages.appendChild(messageDiv);
                 this.scrollToBottom();
+                
+                // 🔥 تفعيل MathJax على المحتوى الجديد
+                if (window.MathJax) {
+                    MathJax.typesetPromise([messageContent]).catch((error) => {
+                        console.warn('MathJax typeset error:', error);
+                    });
+                }
+            }
+
+            // 🔥 دالة معالجة المحتوى الرياضي
+            formatMathContent(text) {
+                if (!text) return '';
+                
+                let formatted = text;
+                
+                // 1. العناوين
+                formatted = formatted.replace(/### (.+)/g, '<h3>$1</h3>');
+                formatted = formatted.replace(/## (.+)/g, '<h2>$1</h2>');
+                
+                // 2. النصوص المميزة
+                formatted = formatted.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+                formatted = formatted.replace(/\*(.+?)\*/g, '<em>$1</em>');
+                
+                // 3. الأسطر الفاصلة
+                formatted = formatted.replace(/---/g, '<hr class="math-hr">');
+                
+                // 4. الحفاظ على الأسطر
+                formatted = formatted.replace(/\n/g, '<br>');
+                
+                return formatted;
             }
             
             showTypingIndicator() {
@@ -927,7 +1511,9 @@
                 
                 typingDiv.innerHTML = `
                     <div class="message-avatar">
-                        <i class="fas fa-robot"></i>
+                        <div class="ai-avatar-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
                     </div>
                     <div class="message-content">
                         <div class="typing-indicator">
