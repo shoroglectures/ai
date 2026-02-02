@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -6,11 +7,6 @@
     <title>مدربة الذكاء الاصطناعي اشراقة - المدربة شروق الحربي</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- 🔥 إضافة مكتبة Chart.js للرسوم البيانية -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@0.2.3"></script>
     
     <!-- 🔥 إضافة مكتبة MathJax للمعادلات الرياضية -->
     <script>
@@ -597,59 +593,6 @@
             color: var(--dark-grey);
         }
 
-        /* 🔥 حاوية الرسوم البيانية */
-        .chart-container {
-            position: relative;
-            width: 100%;
-            min-height: 250px;
-            max-height: 400px;
-            margin: 15px 0;
-            border-radius: var(--radius);
-            overflow: hidden;
-            background: var(--white);
-            border: 1px solid var(--light-accent);
-            box-shadow: var(--shadow);
-        }
-
-        .chart-container canvas {
-            width: 100% !important;
-            height: 100% !important;
-        }
-
-        .chart-title {
-            text-align: center;
-            font-weight: 700;
-            color: var(--teal-green);
-            margin-bottom: 10px;
-            padding: 10px 0;
-            background: var(--light-accent);
-            border-radius: var(--radius) var(--radius) 0 0;
-        }
-
-        .chart-controls {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .chart-btn {
-            background: var(--teal-green);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: var(--transition);
-        }
-
-        .chart-btn:hover {
-            background: var(--dark-teal);
-            transform: translateY(-2px);
-        }
-
         /* 🔥 تحسينات MathJax */
         .message-content mjx-container {
             display: inline-block !important;
@@ -1013,11 +956,6 @@
                 padding: 1.2rem;
             }
             
-            .chart-container {
-                min-height: 200px;
-                max-height: 300px;
-            }
-            
             .footer {
                 padding: 1rem;
             }
@@ -1060,11 +998,6 @@
             .mobile-menu {
                 width: 260px;
                 padding: 1.2rem;
-            }
-            
-            .chart-container {
-                min-height: 180px;
-                max-height: 250px;
             }
             
             .footer {
@@ -1178,15 +1111,7 @@
                         </div>
                     </div>
                     <div class="message-content">
-                        مرحباً! أنا اشراقة، مدربة الذكاء الاصطناعي. كيف يمكنني مساعدتك اليوم؟<br><br>
-                        يمكنني إنشاء رسوم بيانية مثل:
-                        <ul>
-                            <li>📊 رسم بياني عمودي (بار)</li>
-                            <li>📈 رسم بياني خطي</li>
-                            <li>🟢 رسم بياني دائري</li>
-                            <li>📋 إنفوجرافيك</li>
-                        </ul>
-                        جرب أن تطلب: "ارسم رسم بياني عمودي للمبيعات" أو "أنشئ رسم بياني دائري للتوزيع النسبي"
+                        مرحباً! أنا اشراقة، مدربة الذكاء الاصطناعي. كيف يمكنني مساعدتك اليوم؟
                     </div>
                 </div>
             </div>
@@ -1273,12 +1198,6 @@
                 this.isLoading = false;
                 this.conversationId = this.generateId();
                 
-                // ألوان الرسوم البيانية
-                this.chartColors = {
-                    teal: ['#1a7f75', '#14665f', '#2aa79b', '#34c6b8', '#8bd3c7'],
-                    gradient: ['#1a7f75', '#2aa79b', '#34c6b8', '#8bd3c7', '#c6f7e9']
-                };
-                
                 this.init();
             }
             
@@ -1286,7 +1205,6 @@
                 this.setupEventListeners();
                 this.setupClickOutside();
                 this.autoResizeTextarea();
-                this.registerChartCommands();
             }
             
             setupEventListeners() {
@@ -1373,15 +1291,7 @@
                             </div>
                         </div>
                         <div class="message-content">
-                            مرحباً! أنا اشراقة، مدربة الذكاء الاصطناعي. كيف يمكنني مساعدتك اليوم؟<br><br>
-                            يمكنني إنشاء رسوم بيانية مثل:
-                            <ul>
-                                <li>📊 رسم بياني عمودي (بار)</li>
-                                <li>📈 رسم بياني خطي</li>
-                                <li>🟢 رسم بياني دائري</li>
-                                <li>📋 إنفوجرافيك</li>
-                            </ul>
-                            جرب أن تطلب: "ارسم رسم بياني عمودي للمبيعات" أو "أنشئ رسم بياني دائري للتوزيع النسبي"
+                            مرحباً! أنا اشراقة، مدربة الذكاء الاصطناعي. كيف يمكنني مساعدتك اليوم؟
                         </div>
                     </div>
                 `;
@@ -1396,18 +1306,6 @@
             async sendMessage() {
                 const message = this.messageInput.value.trim();
                 if (!message || this.isLoading) return;
-                
-                // التحقق من وجود أوامر الرسوم البيانية
-                const chartResult = this.checkForChartCommand(message);
-                if (chartResult) {
-                    this.addMessage(message, 'user');
-                    this.messageInput.value = '';
-                    this.messageInput.style.height = 'auto';
-                    setTimeout(() => {
-                        this.createChart(chartResult);
-                    }, 500);
-                    return;
-                }
                 
                 this.addMessage(message, 'user');
                 this.messageInput.value = '';
@@ -1607,267 +1505,6 @@
                 return formatted;
             }
             
-            // 🔥 دالة التسجيل لأوامر الرسوم البيانية
-            registerChartCommands() {
-                this.chartCommands = {
-                    // رسم بياني عمودي
-                    'عمودي': 'bar',
-                    'بار': 'bar',
-                    'أعمدة': 'bar',
-                    'column': 'bar',
-                    'columns': 'bar',
-                    
-                    // رسم بياني خطي
-                    'خطي': 'line',
-                    'خط': 'line',
-                    'line': 'line',
-                    'linear': 'line',
-                    
-                    // رسم بياني دائري
-                    'دائري': 'pie',
-                    'دائرة': 'pie',
-                    'pie': 'pie',
-                    'دونات': 'doughnut',
-                    'doughnut': 'doughnut',
-                    
-                    // إنفوجرافيك
-                    'إنفوجرافيك': 'infographic',
-                    'infographic': 'infographic',
-                    'مخطط': 'infographic',
-                    'رسم توضيحي': 'infographic'
-                };
-            }
-            
-            // 🔥 التحقق من وجود أوامر الرسوم البيانية
-            checkForChartCommand(message) {
-                const lowerMessage = message.toLowerCase();
-                
-                // الكلمات المفتاحية للرسوم البيانية
-                const keywords = [
-                    'رسم بياني', 'رسم', 'مخطط', 'بياني', 'إحصاء',
-                    'مبيعات', 'إحصائيات', 'توزيع', 'نسب', 'أرقام',
-                    'بيانات', 'إحصائية', 'تحليل', 'نتائج'
-                ];
-                
-                const hasKeyword = keywords.some(keyword => 
-                    lowerMessage.includes(keyword)
-                );
-                
-                if (!hasKeyword) return null;
-                
-                // تحديد نوع الرسم البياني
-                let chartType = null;
-                for (const [key, type] of Object.entries(this.chartCommands)) {
-                    if (lowerMessage.includes(key)) {
-                        chartType = type;
-                        break;
-                    }
-                }
-                
-                if (!chartType) chartType = 'bar'; // افتراضي
-                
-                // إنشاء بيانات عشوائية للعرض
-                const chartData = this.generateSampleData(chartType);
-                
-                return {
-                    type: chartType,
-                    data: chartData,
-                    title: this.generateChartTitle(message, chartType)
-                };
-            }
-            
-            // 🔥 إنشاء بيانات عينة
-            generateSampleData(chartType) {
-                const labels = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'];
-                const datasets = [];
-                
-                switch(chartType) {
-                    case 'bar':
-                    case 'line':
-                        datasets.push({
-                            label: 'المبيعات',
-                            data: [65, 59, 80, 81, 56, 55],
-                            backgroundColor: this.chartColors.teal,
-                            borderColor: this.chartColors.teal[1],
-                            borderWidth: 2
-                        });
-                        break;
-                        
-                    case 'pie':
-                    case 'doughnut':
-                        return {
-                            labels: ['البضاعة أ', 'البضاعة ب', 'البضاعة ج', 'البضاعة د'],
-                            datasets: [{
-                                data: [30, 25, 20, 25],
-                                backgroundColor: this.chartColors.gradient,
-                                borderWidth: 1
-                            }]
-                        };
-                        
-                    case 'infographic':
-                        // بيانات أكثر تفصيلاً للإنفوجرافيك
-                        return {
-                            labels: ['الربح', 'المصروفات', 'الاستثمار', 'المخزون'],
-                            datasets: [{
-                                data: [40, 25, 20, 15],
-                                backgroundColor: this.chartColors.gradient,
-                                borderWidth: 2
-                            }]
-                        };
-                }
-                
-                return {
-                    labels: labels,
-                    datasets: datasets
-                };
-            }
-            
-            // 🔥 إنشاء عنوان للرسم البياني
-            generateChartTitle(message, chartType) {
-                const titles = {
-                    'bar': '📊 رسم بياني عمودي',
-                    'line': '📈 رسم بياني خطي',
-                    'pie': '🟢 رسم بياني دائري',
-                    'doughnut': '🍩 رسم بياني دائري مجوف',
-                    'infographic': '📋 إنفوجرافيك تحليلي'
-                };
-                
-                return titles[chartType] || 'رسم بياني';
-            }
-            
-            // 🔥 إنشاء الرسم البياني
-            createChart(chartInfo) {
-                const chartId = 'chart-' + Date.now();
-                const chartHTML = `
-                    <div class="message ai">
-                        <div class="message-avatar">
-                            <div class="ai-avatar-icon">
-                                <i class="fas fa-graduation-cap"></i>
-                            </div>
-                        </div>
-                        <div class="message-content">
-                            <h3>${chartInfo.title}</h3>
-                            <div class="chart-container">
-                                <canvas id="${chartId}"></canvas>
-                            </div>
-                            <div class="chart-controls">
-                                <button class="chart-btn" onclick="app.downloadChart('${chartId}')">
-                                    <i class="fas fa-download"></i> تحميل
-                                </button>
-                                <button class="chart-btn" onclick="app.changeChartType('${chartId}')">
-                                    <i class="fas fa-sync-alt"></i> تغيير النوع
-                                </button>
-                            </div>
-                            <p>📝 تم إنشاء الرسم البياني بناءً على طلبك. يمكنك تحميله أو تغيير نوعه.</p>
-                        </div>
-                    </div>
-                `;
-                
-                this.chatMessages.insertAdjacentHTML('beforeend', chartHTML);
-                this.scrollToBottom();
-                
-                // إنشاء الرسم البياني بعد إضافة HTML
-                setTimeout(() => {
-                    this.renderChart(chartId, chartInfo);
-                }, 100);
-                
-                // إضافة رد نصي
-                setTimeout(() => {
-                    this.addMessage(`✅ لقد قمت بإنشاء ${chartInfo.title} لك. يمكنك تحميل الصورة أو تغيير نوع الرسم البياني باستخدام الأزرار أعلى الرسم.`, 'ai');
-                }, 800);
-            }
-            
-            // 🔥 عرض الرسم البياني
-            renderChart(chartId, chartInfo) {
-                const ctx = document.getElementById(chartId).getContext('2d');
-                
-                const config = {
-                    type: chartInfo.type,
-                    data: chartInfo.data,
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                                rtl: true,
-                                labels: {
-                                    font: {
-                                        family: 'Tajawal',
-                                        size: 12
-                                    }
-                                }
-                            },
-                            tooltip: {
-                                rtl: true,
-                                titleFont: {
-                                    family: 'Tajawal'
-                                },
-                                bodyFont: {
-                                    family: 'Tajawal'
-                                }
-                            }
-                        },
-                        scales: chartInfo.type === 'bar' || chartInfo.type === 'line' ? {
-                            x: {
-                                ticks: {
-                                    font: {
-                                        family: 'Tajawal'
-                                    }
-                                }
-                            },
-                            y: {
-                                ticks: {
-                                    font: {
-                                        family: 'Tajawal'
-                                    }
-                                },
-                                beginAtZero: true
-                            }
-                        } : {}
-                    }
-                };
-                
-                new Chart(ctx, config);
-            }
-            
-            // 🔥 تحميل الرسم البياني
-            downloadChart(chartId) {
-                const canvas = document.getElementById(chartId);
-                const link = document.createElement('a');
-                link.download = 'رسم-بياني-' + new Date().toLocaleDateString('ar-SA') + '.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            }
-            
-            // 🔥 تغيير نوع الرسم البياني
-            changeChartType(chartId) {
-                const canvas = document.getElementById(chartId);
-                const chart = Chart.getChart(canvas);
-                
-                if (!chart) return;
-                
-                const types = ['bar', 'line', 'pie', 'doughnut'];
-                const currentIndex = types.indexOf(chart.config.type);
-                const nextType = types[(currentIndex + 1) % types.length];
-                
-                chart.config.type = nextType;
-                chart.update();
-                
-                // تحديث العنوان
-                const titleElement = canvas.closest('.message-content').querySelector('h3');
-                const titles = {
-                    'bar': '📊 رسم بياني عمودي',
-                    'line': '📈 رسم بياني خطي',
-                    'pie': '🟢 رسم بياني دائري',
-                    'doughnut': '🍩 رسم بياني دائري مجوف'
-                };
-                
-                if (titleElement && titles[nextType]) {
-                    titleElement.textContent = titles[nextType];
-                }
-            }
-            
             showTypingIndicator() {
                 const typingDiv = document.createElement('div');
                 typingDiv.className = 'message ai';
@@ -1909,7 +1546,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            window.app = new AITrainerApp();
+            new AITrainerApp();
         });
     </script>
 </body>
